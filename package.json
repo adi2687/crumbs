@@ -14,6 +14,7 @@
     "reed-solomon": "^4.0.0",
     "reed-solomon-erasure": "^0.1.0",
     "sharp": "^0.34.3",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "wrtc": "^0.4.7"
   }
 }

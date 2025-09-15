@@ -26,8 +26,9 @@ def resize_if_needed(img: Image.Image):
     if width > MAX_IMAGE_WIDTH or height > MAX_IMAGE_HEIGHT:
         img.thumbnail((MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT))
     return img
-
+total=0
 def compress_image(img_path, output_path, format="webp", quality=80,totoal_size=0):
+    global total
     try:
         original_size = os.path.getsize(img_path)
 
@@ -39,6 +40,7 @@ def compress_image(img_path, output_path, format="webp", quality=80,totoal_size=
         saved = original_size - new_size
         percent = (saved / original_size) * 100
         totoal_size += saved
+        total+=percent
         print(f"[✓] Compressed image: {img_path} → {output_path}")
         print(f"    [💾] Saved: {format_size(saved)} ({percent:.2f}%)")
         print(f"    [📦] New Size: {format_size(new_size)} (was {format_size(original_size)})")
@@ -88,7 +90,7 @@ def compress_video(video_path, output_path, crf=28):
 
     except Exception as e:
         print(f"[x] Error compressing {video_path}: {e}")
-
+totalcompress=0
 # Main loop
 for filename in os.listdir(INPUT_DIR):
     name, ext = os.path.splitext(filename)
@@ -101,3 +103,4 @@ for filename in os.listdir(INPUT_DIR):
     elif ext.lower() in VIDEO_EXTS:
         output_file = os.path.join(OUTPUT_DIR, f"{name}_compressed.mp4")
         compress_video(file_path, output_file)
+print(total//len(os.listdir(INPUT_DIR)))

@@ -2,7 +2,7 @@ const fs = require("fs");
 
 function mergeImageChunks(chunkFiles, outputPath) {
     const name=(chunkFiles[0].split('.')[0])
-    outputPath=`${name}.png`
+    outputPath=`${name}restor.png`
     const buffers = chunkFiles.map(file => fs.readFileSync(file));
     const merged = Buffer.concat(buffers);
     fs.writeFileSync(outputPath, merged);
