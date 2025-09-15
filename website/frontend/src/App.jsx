@@ -11,9 +11,10 @@ function App() {
       <div>
         <h1>Project Crumbs</h1>
         <p>Peer-to-peer file sharing</p>
+        <p>Worlds first peer-to-peer file sharing application</p>
       </div>
       <footer>
-        made by aditya kurani
+        Made by aditya kurani
       </footer>
     </>
   )
