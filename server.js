@@ -1,59 +1,47 @@
-// Install: npm install ws
-const WebSocket = require("ws");
+// Install: npm install express body-parser
+const express = require("express");
+const bodyParser = require("body-parser");
 
-const wss = new WebSocket.Server({ port: 8080 });
-let peers = {}; // { peerId: { socket, lastSeen } }
+const app = express();
+app.use(bodyParser.json());
 
-function broadcastPeerList() {
-    const peerList = Object.keys(peers);
-    const data = JSON.stringify({ type: "peerList", peers: peerList });
-    for (let peerId in peers) {
-        peers[peerId].socket.send(data);
-    }
-}
+const peers = {}; // { peerId: { address, lastSeen } }
+const TIMEOUT = 15000; // 15 seconds
 
-wss.on("connection", (ws) => {
-    let peerId = null;
-
-    ws.on("message", (msg) => {
-        try {
-            const data = JSON.parse(msg);
-
-            if (data.type === "register") {
-                peerId = data.peerId;
-                peers[peerId] = { socket: ws, lastSeen: Date.now() };
-                console.log(`${peerId} connected`);
-                broadcastPeerList();
-            }
-
-            if (data.type === "heartbeat") {
-                if (peers[peerId]) peers[peerId].lastSeen = Date.now();
-            }
-        } catch (e) {
-            console.error("Invalid message", e);
-        }
-    });
-
-    ws.on("close", () => {
-        if (peerId && peers[peerId]) {
-            delete peers[peerId];
-            console.log(`${peerId} disconnected`);
-            broadcastPeerList();
-        }
-    });
+// Register a peer
+app.post("/register", (req, res) => {
+  const { peerId, address } = req.body;
+  if (!peerId || !address) return res.status(400).send("Missing peerId or address");
+  peers[peerId] = { address, lastSeen: Date.now() };
+  console.log(`${peerId} registered at ${address}`);
+  res.json({ ok: true });
 });
 
-// Check for inactive peers every 10s
-setInterval(() => {
-    const now = Date.now();
-    for (let id in peers) {
-        if (now - peers[id].lastSeen > 15000) { // 15s timeout
-            console.log(`${id} timed out`);
-            peers[id].socket.close();
-            delete peers[id];
-        }
-    }
-    broadcastPeerList();
-}, 10000);
+// Receive heartbeat
+app.post("/heartbeat", (req, res) => {
+  const { peerId } = req.body;
+  if (peers[peerId]) peers[peerId].lastSeen = Date.now();
+  res.json({ ok: true });
+});
 
-console.log("Server running on ws://localhost:8080");
+// List online peers
+app.get("/peers", (req, res) => {
+  const now = Date.now();
+  const online = Object.entries(peers)
+    .filter(([_, p]) => now - p.lastSeen <= TIMEOUT)
+    .map(([id, p]) => ({ peerId: id, address: p.address }));
+  res.json(online);
+});
+
+// Remove offline peers periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const id in peers) {
+    if (now - peers[id].lastSeen > TIMEOUT) {
+      console.log(`${id} timed out`);
+      delete peers[id];
+    }
+  }
+}, 5000);
+
+app.listen(7000, () => console.log("Tracker running on http://localhost:7000"));
