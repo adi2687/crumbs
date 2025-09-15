@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 7000; // Render sets PORT dynamically
 const peers = {}; // { peerId: { address, lastSeen } }
-const TIMEOUT = 15000; // 15 seconds
+const TIMEOUT = 25000; // 15 seconds
 
 // POST register
 app.post("/register", (req, res) => {
