@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud, Smartphone, Shield, Coins, Users, Zap, ChevronRight, Play, Check, Network, Database, Lock, Star, ArrowRight, Menu, X } from 'lucide-react';
 import Calculator from './calculator';
-import {Navigate,useNavigate} from 'react-router-dom'
 import useNavigation from '../../Hooks/navigations';
+
 const ProjectAtlasLanding = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate=useNavigate()
-  const {opencontact}=useNavigation()
+  const { opencontact } = useNavigation()
+  
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -94,14 +94,27 @@ const ProjectAtlasLanding = () => {
         .matrix-column {
           position: absolute;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 12px;
-          color: rgba(255, 255, 255, 0.8);
+          font-size: 8px;
+          color: rgba(255, 255, 255, 0.4);
           animation: matrix-fall linear infinite;
           white-space: pre;
         }
 
+        @media (min-width: 768px) {
+          .matrix-column {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+          }
+        }
+
         .matrix-column:nth-child(odd) {
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (min-width: 768px) {
+          .matrix-column:nth-child(odd) {
+            color: rgba(255, 255, 255, 0.6);
+          }
         }
 
         .matrix-column:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
@@ -135,15 +148,32 @@ const ProjectAtlasLanding = () => {
         .neon-border {
           border: 1px solid rgba(255, 255, 255, 0.2);
           box-shadow: 
-            0 0 10px rgba(255, 255, 255, 0.1),
-            inset 0 0 10px rgba(255, 255, 255, 0.05);
+            0 0 5px rgba(255, 255, 255, 0.1),
+            inset 0 0 5px rgba(255, 255, 255, 0.05);
+        }
+
+        @media (min-width: 768px) {
+          .neon-border {
+            box-shadow: 
+              0 0 10px rgba(255, 255, 255, 0.1),
+              inset 0 0 10px rgba(255, 255, 255, 0.05);
+          }
         }
 
         .neon-glow {
           box-shadow: 
-            0 0 20px rgba(255, 255, 255, 0.2), 
-            0 0 40px rgba(255, 255, 255, 0.1), 
-            0 0 60px rgba(255, 255, 255, 0.05);
+            0 0 10px rgba(255, 255, 255, 0.2), 
+            0 0 20px rgba(255, 255, 255, 0.1), 
+            0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        @media (min-width: 768px) {
+          .neon-glow {
+            box-shadow: 
+              0 0 20px rgba(255, 255, 255, 0.2), 
+              0 0 40px rgba(255, 255, 255, 0.1), 
+              0 0 60px rgba(255, 255, 255, 0.05);
+          }
         }
 
         .glass-card {
@@ -156,13 +186,14 @@ const ProjectAtlasLanding = () => {
         .glass-card:hover {
           background: rgba(255, 255, 255, 0.08);
           border: 1px solid rgba(255, 255, 255, 0.2);
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          transform: translateY(-2px) scale(1.01);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
           .glass-card:hover {
-            transform: translateY(-4px) scale(1.01);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
           }
         }
 
@@ -212,18 +243,38 @@ const ProjectAtlasLanding = () => {
 
         @keyframes glitch-1 {
           0%, 100% { transform: translate(0); }
-          20% { transform: translate(-2px, 2px); }
-          40% { transform: translate(-2px, -2px); }
-          60% { transform: translate(2px, 2px); }
-          80% { transform: translate(2px, -2px); }
+          20% { transform: translate(-1px, 1px); }
+          40% { transform: translate(-1px, -1px); }
+          60% { transform: translate(1px, 1px); }
+          80% { transform: translate(1px, -1px); }
+        }
+
+        @media (min-width: 768px) {
+          @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+          }
         }
 
         @keyframes glitch-2 {
           0%, 100% { transform: translate(0); }
-          20% { transform: translate(2px, -2px); }
-          40% { transform: translate(2px, 2px); }
-          60% { transform: translate(-2px, -2px); }
-          80% { transform: translate(-2px, 2px); }
+          20% { transform: translate(1px, -1px); }
+          40% { transform: translate(1px, 1px); }
+          60% { transform: translate(-1px, -1px); }
+          80% { transform: translate(-1px, 1px); }
+        }
+
+        @media (min-width: 768px) {
+          @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(2px, -2px); }
+            40% { transform: translate(2px, 2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(-2px, 2px); }
+          }
         }
 
         .scanline {
@@ -250,8 +301,14 @@ const ProjectAtlasLanding = () => {
         .terminal-cursor {
           display: inline-block;
           background-color: #ffffff;
-          width: 3px;
+          width: 2px;
           animation: blink 1s infinite;
+        }
+
+        @media (min-width: 768px) {
+          .terminal-cursor {
+            width: 3px;
+          }
         }
 
         @keyframes blink {
@@ -261,10 +318,36 @@ const ProjectAtlasLanding = () => {
 
         .ascii-art {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 8px;
-          line-height: 1;
+          font-size: 0.5rem;
+          line-height: 1.1;
           white-space: pre;
-          color: rgba(255, 255, 255, 0.3);
+          color: rgba(255, 255, 255, 0.8);
+          overflow-x: auto;
+        }
+
+        @media (min-width: 640px) {
+          .ascii-art {
+            font-size: 0.75rem;
+          }
+        }
+
+        @media (min-width: 768px) {
+          .ascii-art {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.3);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .ascii-art {
+            font-size: 1.25rem;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          .ascii-art {
+            font-size: 1.5rem;
+          }
         }
 
         .data-stream {
@@ -273,15 +356,22 @@ const ProjectAtlasLanding = () => {
         }
 
         .data-stream::after {
-          content: '01010101010101010101010101010101';
+          content: '0101010101010101';
           position: absolute;
           top: 50%;
           left: -100%;
           transform: translateY(-50%);
           font-family: 'JetBrains Mono', monospace;
-          font-size: 10px;
+          font-size: 8px;
           color: rgba(255, 255, 255, 0.3);
           animation: data-flow 4s linear infinite;
+        }
+
+        @media (min-width: 768px) {
+          .data-stream::after {
+            content: '01010101010101010101010101010101';
+            font-size: 10px;
+          }
         }
 
         @keyframes data-flow {
@@ -291,9 +381,18 @@ const ProjectAtlasLanding = () => {
 
         .circuit-pattern {
           background-image: 
-            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+          background-size: 10px 10px;
+        }
+
+        @media (min-width: 768px) {
+          .circuit-pattern {
+            background-image: 
+              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+          }
         }
 
         .hover-lift {
@@ -301,28 +400,50 @@ const ProjectAtlasLanding = () => {
         }
 
         .hover-lift:hover {
-          transform: translateY(-5px);
-          filter: brightness(1.1);
+          transform: translateY(-2px);
+          filter: brightness(1.05);
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
           .hover-lift:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            filter: brightness(1.1);
           }
         }
 
         .mobile-menu-overlay {
           position: fixed;
-          top: 0%;
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.9);
+          background: rgba(0, 0, 0, 0.95);
           backdrop-filter: blur(10px);
           z-index: 50;
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        /* Mobile-first ASCII adjustments */
+        .mobile-ascii {
+          font-size: 0.4rem;
+          line-height: 0.9;
+          overflow-x: auto;
+          padding: 0 1rem;
+        }
+
+        @media (min-width: 380px) {
+          .mobile-ascii {
+            font-size: 0.5rem;
+          }
+        }
+
+        @media (min-width: 640px) {
+          .mobile-ascii {
+            font-size: 0.7rem;
+            padding: 0;
+          }
         }
       `}</style>
 
@@ -332,7 +453,7 @@ const ProjectAtlasLanding = () => {
         <div className="matrix-rain">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="matrix-column">
-              {Array.from({ length: 20 }, () => 
+              {Array.from({ length: 15 }, () =>
                 Math.random() > 0.5 ? '1' : '0'
               ).join('\n')}
             </div>
@@ -340,34 +461,33 @@ const ProjectAtlasLanding = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="fixed z-20 w-full  p-4 md:p-6 glass-card border-b border-white border-opacity-10">
+        <nav className="fixed z-20 w-full p-3 md:p-6 glass-card border-b border-white border-opacity-10">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
-                <Database className="w-6 h-6 md:w-7 md:h-7 text-white" />
+            <div className="flex items-center space-x-2 md:space-x-3">
+              <div className="w-8 h-8 md:w-12 md:h-12 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
+                <Database className="w-4 h-4 md:w-7 md:h-7 text-white" />
               </div>
               <div className='cursor-pointer'>
-                <h1 className="text-xl md:text-2xl font-bold mono-text cursor-pointer"  >CRUMBS</h1>
-                <p className="text-xs md:text-sm text-gray-300 mono-text">by aditya.kurani</p>
+                <h1 className="text-lg md:text-2xl font-bold mono-text cursor-pointer">CRUMBS</h1>
               </div>
             </div>
-            
+
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="mono-text hover:text-gray-300 transition-colors">[features]</a>
-              <a href="#algorithm" className="mono-text hover:text-gray-300 transition-colors">[algorithm]</a>
-              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer" onClick={()=>opencontact('/contact')}>[contact]</p>
-              <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer">
+            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+              <a href="#features" className="mono-text hover:text-gray-300 transition-colors text-sm lg:text-base">[features]</a>
+              <a href="#algorithm" className="mono-text hover:text-gray-300 transition-colors text-sm lg:text-base">[algorithm]</a>
+              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer text-sm lg:text-base" onClick={() => opencontact('/contact')}>[contact]</p>
+              <button className="bg-white text-black px-4 lg:px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer text-sm lg:text-base">
                 JOIN_NETWORK
               </button>
             </div>
 
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className="md:hidden p-2 hover:bg-white hover:bg-opacity-10 rounded transition-all"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </nav>
@@ -375,34 +495,44 @@ const ProjectAtlasLanding = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="mobile-menu-overlay">
-            <div className="glass-card rounded-lg p-8 mx-4 w-full max-w-sm">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold mono-text">MENU</h2>
-                <button 
+            <div className="glass-card rounded-lg p-6 mx-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
+              {/* CRUMBS ASCII Art in Mobile Menu */}
+              <div className="ascii-art mobile-ascii mb-4 text-center">
+{`░█████╗░██████╗░██╗░░░██╗███╗░░░███╗██████╗░░██████╗
+██╔══██╗██╔══██╗██║░░░██║████╗░████║██╔══██╗██╔════╝
+██║░░╚═╝██████╔╝██║░░░██║██╔████╔██║██████╦╝╚█████╗░
+██║░░██╗██╔══██╗██║░░░██║██║╚██╔╝██║██╔══██╗░╚═══██╗
+╚█████╔╝██║░░██║╚██████╔╝██║░╚═╝░██║██████╦╝██████╔╝
+░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░`}
+              </div>
+
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg font-bold mono-text">MENU</h2>
+                <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-2 hover:bg-white hover:bg-opacity-10 rounded"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="space-y-6">
-                <a 
-                  href="#features" 
-                  className="block mono-text hover:text-gray-300 transition-colors"
+              <div className="space-y-4">
+                <a
+                  href="#features"
+                  className="block mono-text hover:text-gray-300 transition-colors text-sm"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   [features]
                 </a>
-                <a 
-                  href="#algorithm" 
-                  className="block mono-text hover:text-gray-300 transition-colors"
+                <a
+                  href="#algorithm"
+                  className="block mono-text hover:text-gray-300 transition-colors text-sm"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   [algorithm]
                 </a>
-                <a 
-                  href="#contact" 
-                  className="block mono-text hover:text-gray-300 transition-colors"
+                <a
+                  href="#contact"
+                  className="block mono-text hover:text-gray-300 transition-colors text-sm"
                   onClick={() => {
                     setMobileMenuOpen(false)
                     opencontact('/contact')
@@ -410,7 +540,7 @@ const ProjectAtlasLanding = () => {
                 >
                   [contact]
                 </a>
-                <button className="w-full bg-white text-black px-6 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow">
+                <button className="w-full bg-white text-black px-4 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow text-sm">
                   JOIN_NETWORK
                 </button>
               </div>
@@ -419,9 +549,17 @@ const ProjectAtlasLanding = () => {
         )}
 
         {/* Hero Section */}
-        <section className="relative z-10 pt-36 md:pt-40 pb-16 md:pb-32">
+        <section className="relative z-10 pt-24 sm:pt-32 md:pt-40 pb-12 md:pb-32">
           <div className="max-w-7xl mx-auto px-4 md:px-6 text-center">
-            <div className="ascii-art mb-8 hidden lg:block text-xs">
+            {/* Mobile CRUMBS - Simple text version */}
+            <div className="block sm:hidden mb-6">
+              <h1 className="text-3xl font-bold mono-text glitch-text" data-text="CRUMBS">
+                CRUMBS
+              </h1>
+            </div>
+
+            {/* Desktop CRUMBS - ASCII art */}
+            <div className="hidden sm:block ascii-art mb-8 text-center">
 {`    ░█████╗░██████╗░██╗░░░██╗███╗░░░███╗██████╗░░██████╗
     ██╔══██╗██╔══██╗██║░░░██║████╗░████║██╔══██╗██╔════╝
     ██║░░╚═╝██████╔╝██║░░░██║██╔████╔██║██████╦╝╚█████╗░
@@ -429,30 +567,26 @@ const ProjectAtlasLanding = () => {
     ╚█████╔╝██║░░██║╚██████╔╝██║░╚═╝░██║██████╦╝██████╔╝
     ░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░`}
             </div>
-            
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-4 md:mb-8 glitch-text mono-text" data-text="CRUMBS">
-              CRUMBS
-            </h1>
-            
-            <h2 className="text-lg sm:text-2xl md:text-4xl font-semibold mb-4 md:mb-6 text-gray-200 mono-text">
+
+            <h2 className="text-sm sm:text-lg md:text-2xl lg:text-4xl font-semibold mb-4 md:mb-6 text-gray-200 mono-text">
               DECENTRALIZED_CLOUD_STORAGE_NETWORK
             </h2>
-            
+
             <div className="glass-card rounded-lg p-4 md:p-8 mb-8 md:mb-12 max-w-4xl mx-auto neon-border">
-              <div className="text-sm sm:text-lg md:text-2xl mono-text text-gray-300 space-y-2 md:space-y-4">
+              <div className="text-xs sm:text-sm md:text-lg lg:text-2xl mono-text text-gray-300 space-y-2 md:space-y-4">
                 <p>TRANSFORM IDLE SMARTPHONE STORAGE INTO POWERFUL P2P NETWORK</p>
                 <p>SAVE <span className="text-white font-bold">92.1%</span> ON STORAGE COSTS</p>
                 <p>EARN TOKENS FOR CONTRIBUTING TO THE FUTURE</p>
               </div>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center">
-              <button className="group bg-white text-black px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center scanline cursor-pointer text-sm md:text-base">
-                <Play className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-6 justify-center items-center">
+              <button className="group bg-white text-black px-4 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center scanline cursor-pointer text-xs sm:text-sm md:text-base">
+                <Play className="w-3 h-3 md:w-5 md:h-5 mr-2" />
                 START_EARNING_NOW
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-3 h-3 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="border-2 border-white px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all cursor-pointer text-sm md:text-base">
+              <button className="border-2 border-white px-4 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all cursor-pointer text-xs sm:text-sm md:text-base">
                 LEARN_MORE
               </button>
             </div>
@@ -460,15 +594,12 @@ const ProjectAtlasLanding = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="py-8 md:py-16 relative">
+        <section className="py-6 md:py-16 relative">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center glass-card rounded p-4 md:p-6 neon-border hover-lift data-stream">
-                  {/* <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
-                    {React.cloneElement(stat.icon, { className: "w-6 h-6 md:w-8 md:h-8" })}
-                  </div> */}
-                  <div className="text-2xl md:text-4xl font-bold mono-text mb-1 md:mb-2">{stat.number}</div>
+                <div key={index} className="text-center glass-card rounded p-3 md:p-6 neon-border hover-lift data-stream">
+                  <div className="text-lg sm:text-2xl md:text-4xl font-bold mono-text mb-1 md:mb-2">{stat.number}</div>
                   <div className="text-gray-300 mono-text text-xs md:text-sm">{stat.label}</div>
                 </div>
               ))}
@@ -477,25 +608,25 @@ const ProjectAtlasLanding = () => {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-10 md:py-20">
+        <section id="features" className="py-8 md:py-20">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="text-center mb-8 md:mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 mono-text glitch-text" data-text="FEATURES">FEATURES</h2>
-              <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mono-text">
+            <div className="text-center mb-6 md:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-6 mono-text glitch-text" data-text="FEATURES">FEATURES</h2>
+              <p className="text-sm sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mono-text">
                 NEXT_GENERATION_CLOUD_STORAGE_TECHNOLOGY
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
               {features.map((feature, index) => (
-                <div 
+                <div
                   key={index}
                   className="glass-card rounded p-4 md:p-8 neon-border group cursor-pointer hover-lift scanline circuit-pattern"
                   onMouseEnter={() => setActiveFeature(index)}
                 >
-                  <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 mono-text group-hover:text-white transition-colors">
+                  <h3 className="text-sm sm:text-lg md:text-xl font-semibold mb-2 md:mb-4 mono-text group-hover:text-white transition-colors">
                     {feature.title.toUpperCase().replace(/ /g, '_')}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-xs md:text-sm">
+                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-xs sm:text-sm">
                     {feature.description}
                   </p>
                 </div>
@@ -505,25 +636,25 @@ const ProjectAtlasLanding = () => {
         </section>
 
         {/* Algorithm Section */}
-        <section id="algorithm" className="py-10 md:py-20">
+        <section id="algorithm" className="py-8 md:py-20">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="text-center mb-8 md:mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 mono-text glitch-text" data-text="ALGORITHM">ALGORITHM</h2>
-              <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mono-text">
-                 INTELLIGENT_P2P_DISTRIBUTION_PROTOCOL
+            <div className="text-center mb-6 md:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-6 mono-text glitch-text" data-text="ALGORITHM">ALGORITHM</h2>
+              <p className="text-sm sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mono-text">
+                INTELLIGENT_P2P_DISTRIBUTION_PROTOCOL
               </p>
             </div>
-            
-            <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-center">
+
+            <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-start">
               <div className="glass-card rounded p-4 md:p-8 neon-border circuit-pattern">
-                <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 mono-text">PROCESS_FLOW:</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 md:mb-6 mono-text">PROCESS_FLOW:</h3>
                 <div className="space-y-3 md:space-y-4">
                   {algorithmSteps.map((step, index) => (
-                    <div key={index} className="flex items-center space-x-3 md:space-x-4 group">
-                      <div className="w-6 h-6 md:w-8 md:h-8 bg-white text-black rounded flex items-center justify-center mono-text font-bold group-hover:bg-gray-200 transition-all text-xs md:text-sm">
+                    <div key={index} className="flex items-start space-x-3 md:space-x-4 group">
+                      <div className="w-6 h-6 md:w-8 md:h-8 bg-white text-black rounded flex items-center justify-center mono-text font-bold group-hover:bg-gray-200 transition-all text-xs md:text-sm flex-shrink-0">
                         {index + 1}
                       </div>
-                      <span className="text-gray-300 group-hover:text-white transition-colors mono-text text-xs md:text-sm">
+                      <span className="text-gray-300 group-hover:text-white transition-colors mono-text text-xs sm:text-sm md:text-sm">
                         {step.toUpperCase().replace(/ /g, '_')}
                       </span>
                     </div>
@@ -533,19 +664,19 @@ const ProjectAtlasLanding = () => {
 
               <div className="relative">
                 <div className="glass-card rounded p-4 md:p-8 neon-border">
-                  <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 mono-text">NETWORK_TOPOLOGY:</h3>
-                  <div className="grid grid-cols-2 gap-3 md:gap-4">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 md:mb-6 mono-text">NETWORK_TOPOLOGY:</h3>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
                     {['NODE_A', 'NODE_B', 'NODE_C', 'NODE_D'].map((node, index) => (
-                      <div key={index} className="data-stream bg-black bg-opacity-10 rounded p-3 md:p-4 text-center neon-border neon-glow">
-                        <Smartphone className="w-5 h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2" />
+                      <div key={index} className="data-stream bg-black bg-opacity-10 rounded p-2 sm:p-3 md:p-4 text-center neon-border neon-glow">
+                        <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 md:mb-2" />
                         <div className="text-xs md:text-sm font-semibold mono-text">{node}</div>
                         <div className="text-xs text-gray-300 mono-text">[{[15, 25, 45, 50][index]}_SHARDS]</div>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 md:mt-6 text-center">
-                    <div className="inline-block glass-card rounded px-3 md:px-4 py-2 neon-border">
-                      <Check className="w-3 h-3 md:w-4 md:h-4 inline mr-2" />
+                  <div className="mt-3 md:mt-6 text-center">
+                    <div className="inline-block glass-card rounded px-2 sm:px-3 md:px-4 py-1 sm:py-2 neon-border">
+                      <Check className="w-3 h-3 md:w-4 md:h-4 inline mr-1 sm:mr-2" />
                       <span className="text-white mono-text text-xs md:text-sm">OPTIMAL_DISTRIBUTION_ACHIEVED</span>
                     </div>
                   </div>
@@ -556,39 +687,39 @@ const ProjectAtlasLanding = () => {
         </section>
 
         {/* Target Audience Section */}
-        <section className="py-10 md:py-20">
+        <section className="py-8 md:py-20">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <div className="text-center mb-8 md:mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 mono-text glitch-text" data-text="TARGET_USERS">TARGET_USERS</h2>
-              <p className="text-lg md:text-xl text-gray-300 mono-text">OPTIMIZED_FOR_FORWARD_THINKING_INDIVIDUALS</p>
+            <div className="text-center mb-6 md:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 md:mb-6 mono-text glitch-text" data-text="TARGET_USERS">TARGET_USERS</h2>
+              <p className="text-sm sm:text-lg md:text-xl text-gray-300 mono-text">OPTIMIZED_FOR_FORWARD_THINKING_INDIVIDUALS</p>
             </div>
-            
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
               {[
                 {
-                  icon: <Users className="w-6 h-6 md:w-8 md:h-8" />,
+                  icon: <Users className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />,
                   title: "STUDENTS_&_PROFESSIONALS",
                   description: "Access affordable, reliable storage for projects and media"
                 },
                 {
-                  icon: <Lock className="w-6 h-6 md:w-8 md:h-8" />,
+                  icon: <Lock className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />,
                   title: "PRIVACY_FOCUSED_USERS",
                   description: "Complete control over data with end-to-end encryption"
                 },
                 {
-                  icon: <Network className="w-6 h-6 md:w-8 md:h-8" />,
+                  icon: <Network className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />,
                   title: "EMERGING_MARKETS",
                   description: "Democratizing cloud storage in expensive service regions"
                 }
               ].map((audience, index) => (
                 <div key={index} className="glass-card rounded p-4 md:p-8 neon-border text-center group hover-lift scanline">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow group-hover:bg-opacity-20 transition-all">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-6 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow group-hover:bg-opacity-20 transition-all">
                     {audience.icon}
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4 mono-text group-hover:text-white transition-colors">
+                  <h3 className="text-sm sm:text-lg md:text-xl font-semibold mb-2 md:mb-4 mono-text group-hover:text-white transition-colors">
                     {audience.title}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-xs md:text-sm">
+                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-xs sm:text-sm">
                     {audience.description}
                   </p>
                 </div>
@@ -596,25 +727,27 @@ const ProjectAtlasLanding = () => {
             </div>
           </div>
         </section>
-<Calculator />
+
+        <Calculator />
+
         {/* Call to Action */}
-        <section className="py-10 md:py-20">
+        <section className="py-8 md:py-20">
           <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
-            <div className="glass-card rounded-lg p-6 md:p-12 neon-border circuit-pattern">
-              <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 mono-text glitch-text" data-text="JOIN_REVOLUTION">
+            <div className="glass-card rounded-lg p-4 sm:p-6 md:p-12 neon-border circuit-pattern">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-4 md:mb-6 mono-text glitch-text" data-text="JOIN_REVOLUTION">
                 JOIN_THE_REVOLUTION<span className="terminal-cursor">█</span>
               </h2>
-              <div className="text-sm sm:text-lg md:text-xl text-gray-300 mb-6 md:mb-8 mono-text space-y-2">
+              <div className="text-xs sm:text-sm md:text-xl text-gray-300 mb-4 md:mb-8 mono-text space-y-1 sm:space-y-2">
                 <p>BE_PART_OF_DECENTRALIZED_STORAGE_FUTURE</p>
                 <p>TURN_UNUSED_STORAGE_INTO_EARNING_POTENTIAL</p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-                <button className="group bg-white text-black px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center text-sm md:text-base cursor-pointer">
-                  <Smartphone className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-6 justify-center">
+                <button className="group bg-white text-black px-4 sm:px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center text-xs sm:text-sm md:text-base cursor-pointer">
+                  <Smartphone className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 mr-2" />
                   DOWNLOAD_APP
-                  <ChevronRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button className="border-2 border-white px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all text-sm md:text-base cursor-pointer">
+                <button className="border-2 border-white px-4 sm:px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all text-xs sm:text-sm md:text-base cursor-pointer">
                   VIEW_DOCUMENTATION
                 </button>
               </div>
@@ -623,23 +756,23 @@ const ProjectAtlasLanding = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-8 md:py-12 border-t border-white border-opacity-10">
+        <footer className="py-6 md:py-12 border-t border-white border-opacity-10">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 md:w-10 md:h-10 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
-                  <Database className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
+                  <Database className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-base md:text-lg font-bold mono-text">PROJECT_CRUMBS</div>
-                  <div className="text-xs md:text-sm text-gray-300 mono-text">DECENTRALIZED_CLOUD_STORAGE</div>
+                  <div className="text-sm sm:text-base md:text-lg font-bold mono-text">PROJECT_CRUMBS</div>
+                  <div className="text-xs sm:text-sm text-gray-300 mono-text">DECENTRALIZED_CLOUD_STORAGE</div>
                 </div>
               </div>
               <div className="text-center md:text-right">
-                <p className="text-gray-400 mb-1 md:mb-2 mono-text text-sm md:text-base">
+                <p className="text-gray-400 mb-1 md:mb-2 mono-text text-xs sm:text-sm md:text-base">
                   CREATED_BY <span className="text-white font-semibold">ADITYA_KURANI</span>
                 </p>
-                <p className="text-xs md:text-sm text-gray-500 mono-text">© 2025 PROJECT_CRUMBS. ALL_RIGHTS_RESERVED.</p>
+                <p className="text-xs sm:text-sm text-gray-500 mono-text">© 2025 PROJECT_CRUMBS. ALL_RIGHTS_RESERVED.</p>
               </div>
             </div>
           </div>
