@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud, Smartphone, Shield, Coins, Users, Zap, ChevronRight, Play, Check, Network, Database, Lock, Star, ArrowRight, Menu, X } from 'lucide-react';
 import Calculator from './calculator';
+import {Navigate,useNavigate} from 'react-router-dom'
+import useNavigation from '../../Hooks/navigations';
 const ProjectAtlasLanding = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const navigate=useNavigate()
+  const {opencontact}=useNavigation()
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -310,7 +313,7 @@ const ProjectAtlasLanding = () => {
 
         .mobile-menu-overlay {
           position: fixed;
-          top: 0;
+          top: 0%;
           left: 0;
           right: 0;
           bottom: 0;
@@ -337,14 +340,14 @@ const ProjectAtlasLanding = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="relative z-20 p-4 md:p-6 glass-card border-b border-white border-opacity-10">
+        <nav className="fixed z-20 w-full  p-4 md:p-6 glass-card border-b border-white border-opacity-10">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
                 <Database className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold mono-text">CRUMBS</h1>
+              <div className='cursor-pointer'>
+                <h1 className="text-xl md:text-2xl font-bold mono-text cursor-pointer"  >CRUMBS</h1>
                 <p className="text-xs md:text-sm text-gray-300 mono-text">by aditya.kurani</p>
               </div>
             </div>
@@ -352,8 +355,8 @@ const ProjectAtlasLanding = () => {
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="mono-text hover:text-gray-300 transition-colors">[features]</a>
-              <a href="#algorithm" className="mono-text hover:text-gray-300 transition-colors">[algorithm]</a>
-              <a href="#contact" className="mono-text hover:text-gray-300 transition-colors">[contact]</a>
+              <p href="#algorithm" className="mono-text hover:text-gray-300 transition-colors">[algorithm]</p>
+              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer" onClick={()=>opencontact('/contact')}>[contact]</p>
               <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer">
                 JOIN_NETWORK
               </button>
@@ -400,7 +403,10 @@ const ProjectAtlasLanding = () => {
                 <a 
                   href="#contact" 
                   className="block mono-text hover:text-gray-300 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    opencontact('/contact')
+                  }}
                 >
                   [contact]
                 </a>
@@ -413,7 +419,7 @@ const ProjectAtlasLanding = () => {
         )}
 
         {/* Hero Section */}
-        <section className="relative z-10 pt-10 md:pt-20 pb-16 md:pb-32">
+        <section className="relative z-10 pt-36 md:pt-40 pb-16 md:pb-32">
           <div className="max-w-7xl mx-auto px-4 md:px-6 text-center">
             <div className="ascii-art mb-8 hidden lg:block text-xs">
 {`    ░█████╗░██████╗░██╗░░░██╗███╗░░░███╗██████╗░░██████╗

@@ -1,5 +1,8 @@
 import Landing from './assets/components/landing'
 import Calculator from './assets/components/calculator'
+import Contact from './assets/components/contact'
+import Navbar from './assets/components/Navbar'
+import NotFound from './assets/components/NotFound'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 const App = () => {
   return (
@@ -7,6 +10,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/navbar" element={<Navbar />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
     </Router>
   )
