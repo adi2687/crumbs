@@ -1,6 +1,7 @@
 import FuzzyText from './FuzzyText';
-
+import {useNavigate} from 'react-router-dom'
 const NotFound = () => {
+  const navigate=useNavigate()
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black">
       <FuzzyText 
@@ -17,6 +18,15 @@ const NotFound = () => {
       >
         Not Found
       </FuzzyText>
+      <br />
+      <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer rounded">
+        JOIN_NETWORK
+      </button>
+      <br />
+      <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer rounded"
+      onClick={()=>navigate('/')}>
+        Go Home
+      </button>
     </div>
   );
 };
