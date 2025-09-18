@@ -2,9 +2,10 @@
 const axios = require("axios");
 const dotenv=require('dotenv')
 dotenv.config()
-const ipaddress=process.env.ADDRESS  
-const port=process.env.PORT 
-const TRACKER = `http://${ipaddress}:7000`;
+const ipaddress=process.env.ADDRESS
+const port=process.env.PORT
+console.log(ipaddress,port)
+const TRACKER = `http://${ipaddress}:${port}`;
 
 // Usage: node peer.js <peerId> <port>
 const peerId = process.argv[2] || `peer_${Math.floor(Math.random() * 1000)}`;
