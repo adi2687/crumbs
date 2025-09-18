@@ -397,7 +397,7 @@ const CrumbsContactPage = () => {
             
             <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-8">
               <a href="#" className="mono-text hover:text-gray-300 transition-colors text-xs sm:text-sm md:text-base" onClick={()=>opencontact('/')}>[home]</a>
-              <p href="#" className="mono-text hover:text-gray-300 transition-colors text-xs sm:text-sm md:text-base hidden sm:block" onClick={()=>opencontact('/#features ')}>[features]</p>
+              <p href="#" className="mono-text hover:text-gray-300 transition-colors text-xs sm:text-sm md:text-base hidden sm:block" onClick={()=>opencontact('/#features')}>[features]</p>
               <a href="" className="mono-text text-white font-bold text-xs sm:text-sm md:text-base">[contact]</a>
             </div>
           </div>
