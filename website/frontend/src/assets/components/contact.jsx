@@ -393,7 +393,7 @@ const CrumbsContactPage = () => {
                 <h1 className="text-lg sm:text-xl md:text-2xl font-bold mono-text " onClick={()=>opencontact('/')}>CRUMBS</h1>
                 <p className="text-xs md:text-sm text-gray-300 mono-text hidden sm:block">by aditya.kurani</p>
               </div>
-            </div>
+            </div>c
             
             <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-8">
               <a href="#" className="mono-text hover:text-gray-300 transition-colors text-xs sm:text-sm md:text-base" onClick={()=>opencontact('/')}>[home]</a>

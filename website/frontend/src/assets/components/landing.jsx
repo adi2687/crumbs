@@ -355,7 +355,7 @@ const ProjectAtlasLanding = () => {
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="mono-text hover:text-gray-300 transition-colors">[features]</a>
-              <p href="#algorithm" className="mono-text hover:text-gray-300 transition-colors">[algorithm]</p>
+              <a href="#algorithm" className="mono-text hover:text-gray-300 transition-colors">[algorithm]</a>
               <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer" onClick={()=>opencontact('/contact')}>[contact]</p>
               <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer">
                 JOIN_NETWORK
@@ -609,12 +609,12 @@ const ProjectAtlasLanding = () => {
                 <p>TURN_UNUSED_STORAGE_INTO_EARNING_POTENTIAL</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-                <button className="group bg-white text-black px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center text-sm md:text-base">
+                <button className="group bg-white text-black px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center text-sm md:text-base cursor-pointer">
                   <Smartphone className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   DOWNLOAD_APP
                   <ChevronRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button className="border-2 border-white px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all text-sm md:text-base">
+                <button className="border-2 border-white px-6 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all text-sm md:text-base cursor-pointer">
                   VIEW_DOCUMENTATION
                 </button>
               </div>

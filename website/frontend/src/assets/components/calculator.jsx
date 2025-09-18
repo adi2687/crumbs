@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, TrendingDown, DollarSign, Database, ArrowRight, Calculator } from 'lucide-react';
-
+import Uploadbtn from './uploadbtn';
 const CompressionCalculator = () => {
   const [fileSize, setFileSize] = useState(100);
   const [unit, setUnit] = useState('MB');
@@ -358,8 +358,8 @@ const CompressionCalculator = () => {
           ))}
         </div> */}
 
-        <div className="relative z-10 max-w-7xl mx-auto py-4 md:py-8 px-4 md:px-6">
-          <div className="glass-card rounded-lg p-4 md:p-8 neon-border circuit-pattern">
+        <div className="relative z-10 max-w-3xl mx-auto py-4 md:py-8 px-4 md:px-6">
+            <div className="glass-card rounded-lg p-4 md:p-8 neon-border circuit-pattern">
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center sm:text-left">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow mb-3 sm:mb-0 sm:mr-3">
@@ -486,11 +486,7 @@ const CompressionCalculator = () => {
                 </div>
 
                 {/* Action Button */}
-                <button className="w-full bg-white text-black font-bold py-3 md:py-4 px-4 md:px-6 rounded mono-text transition-all neon-glow hover:bg-gray-200 flex items-center justify-center group scanline cursor-pointer text-sm md:text-base">
-                  <Database className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                  UPLOAD_TO_CRUMBS_NETWORK
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </button>
+                <Uploadbtn />
               </div>
             )}
 
