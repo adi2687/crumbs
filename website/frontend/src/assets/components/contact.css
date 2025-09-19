@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Database, Mail, MessageSquare, Send, User, Phone, MapPin, Github, Linkedin, Twitter, Terminal, Code, Zap, Shield, Globe, Clock, CheckCircle, AlertCircle } from 'lucide-react';
-
-
-const Navbar = () => {
-
-    return (
-        <div>
-            <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-                <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
-         
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
+        
         body {
           font-family: 'Space Grotesk', monospace;
           background: #000000;
@@ -51,10 +41,16 @@ const Navbar = () => {
         .matrix-column {
           position: absolute;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 12px;
+          font-size: 10px;
           color: rgba(255, 255, 255, 0.8);
           animation: matrix-fall linear infinite;
           white-space: pre;
+        }
+
+        @media (min-width: 640px) {
+          .matrix-column {
+            font-size: 12px;
+          }
         }
 
         .matrix-column:nth-child(odd) {
@@ -274,29 +270,10 @@ const Navbar = () => {
           50% { transform: scale(1.05); }
           100% { transform: scale(1); }
         }
-      `}</style>
 
-                <nav className="fixed z-20 w-full p-4 md:p-6 glass-card border-b border-white border-opacity-10">
-                    <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-black bg-opacity-10 rounded border neon-border flex items-center justify-center neon-glow">
-                                <Database className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                            </div>
-                            <div>
-                                <h1 className="text-xl md:text-2xl font-bold mono-text">CRUMBS</h1>
-                                <p className="text-xs md:text-sm text-gray-300 mono-text">by aditya.kurani</p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-4 md:space-x-8">
-                            <a href="#" className="mono-text hover:text-gray-300 transition-colors text-sm md:text-base">[home]</a>
-                            <a href="#" className="mono-text hover:text-gray-300 transition-colors text-sm md:text-base">[features]</a>
-                            <a href="#contact" className="mono-text text-white font-bold text-sm md:text-base">[contact]</a>
-                        </div>
-                    </div>
-                </nav>
-                </div>
-            </div>
-    )
-}
-            export default Navbar
+        /* Additional responsive improvements */
+        @media (max-width: 640px) {
+          .matrix-rain {
+            display: none;
+          }
+        }

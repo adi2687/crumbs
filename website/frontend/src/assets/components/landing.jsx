@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud, Smartphone, Shield, Coins, Users, Zap, ChevronRight, Play, Check, Network, Database, Lock, Star, ArrowRight, Menu, X } from 'lucide-react';
-import Calculator from './calculator';
 import useNavigation from '../../Hooks/navigations';
-
+import './landing.css'
+import Calculator from './calculator';
 const ProjectAtlasLanding = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { opencontact } = useNavigation()
-  
+  const [isHovered, setIsHovered] = useState(false); 
+  const {opencontact}=useNavigation()
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -48,404 +48,63 @@ const ProjectAtlasLanding = () => {
     "Real-time redundancy management"
   ];
 
+  // CRUMBS ASCII art broken into parts for animation
+  const crumbsParts = [
+    // C part
+    `░█████╗░
+██╔══██╗
+██║░░╚═╝
+██║░░██╗
+╚█████╔╝
+░╚════╝░`,
+    // R part
+    `██████╗░
+██╔══██╗
+██████╔╝
+██╔══██╗
+██║░░██║
+╚═╝░░╚═╝`,
+    // U part
+    `██╗░░░██╗
+██║░░░██║
+██║░░░██║
+██║░░░██║
+╚██████╔╝
+░╚═════╝░`,
+    // M part
+    `███╗░░░███╗
+████╗░████║
+██╔████╔██║
+██║╚██╔╝██║
+██║░╚═╝░██║
+╚═╝░░░░░╚═╝`,
+    // B part
+    `██████╗░
+██╔══██╗
+██████╦╝
+██╔══██╗
+██████╦╝
+╚═════╝░`,
+    // S part
+    `░██████╗
+██╔════╝
+╚█████╗░
+░╚═══██╗
+██████╔╝
+╚═════╝░`
+  ];
+
+  const completeASCII = `    
+    ░█████╗░██████╗░██╗░░░██╗███╗░░░███╗██████╗░░██████╗
+    ██╔══██╗██╔══██╗██║░░░██║████╗░████║██╔══██╗██╔════╝
+    ██║░░╚═╝██████╔╝██║░░░██║██╔████╔██║██████╦╝╚█████╗░
+    ██║░░██╗██╔══██╗██║░░░██║██║╚██╔╝██║██╔══██╗░╚═══██╗
+    ╚█████╔╝██║░░██║╚██████╔╝██║░╚═╝░██║██████╦╝██████╔╝
+    ░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░`;
+
   return (
     <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
-        
-        body {
-          font-family: 'Space Grotesk', monospace;
-          background: #000000;
-          color: #ffffff;
-        }
-
-        .terminal-bg {
-          background: #000000;
-          background-image: 
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-          background-size: 50px 50px;
-          position: relative;
-        }
-
-        .terminal-bg::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-          pointer-events: none;
-        }
-
-        .matrix-rain {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          z-index: 0;
-          pointer-events: none;
-        }
-
-        .matrix-column {
-          position: absolute;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 8px;
-          color: rgba(255, 255, 255, 0.4);
-          animation: matrix-fall linear infinite;
-          white-space: pre;
-        }
-
-        @media (min-width: 768px) {
-          .matrix-column {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-          }
-        }
-
-        .matrix-column:nth-child(odd) {
-          color: rgba(255, 255, 255, 0.3);
-        }
-
-        @media (min-width: 768px) {
-          .matrix-column:nth-child(odd) {
-            color: rgba(255, 255, 255, 0.6);
-          }
-        }
-
-        .matrix-column:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
-        .matrix-column:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; }
-        .matrix-column:nth-child(3) { left: 25%; animation-duration: 18s; animation-delay: 4s; }
-        .matrix-column:nth-child(4) { left: 35%; animation-duration: 14s; animation-delay: 6s; }
-        .matrix-column:nth-child(5) { left: 45%; animation-duration: 16s; animation-delay: 8s; }
-        .matrix-column:nth-child(6) { left: 55%; animation-duration: 13s; animation-delay: 10s; }
-        .matrix-column:nth-child(7) { left: 65%; animation-duration: 17s; animation-delay: 12s; }
-        .matrix-column:nth-child(8) { left: 75%; animation-duration: 11s; animation-delay: 14s; }
-        .matrix-column:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: 16s; }
-        .matrix-column:nth-child(10) { left: 95%; animation-duration: 15s; animation-delay: 18s; }
-
-        @keyframes matrix-fall {
-          0% {
-            transform: translateY(-100vh);
-            opacity: 0;
-          }
-          10% {
-            opacity: 1;
-          }
-          90% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(100vh);
-            opacity: 0;
-          }
-        }
-
-        .neon-border {
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 
-            0 0 5px rgba(255, 255, 255, 0.1),
-            inset 0 0 5px rgba(255, 255, 255, 0.05);
-        }
-
-        @media (min-width: 768px) {
-          .neon-border {
-            box-shadow: 
-              0 0 10px rgba(255, 255, 255, 0.1),
-              inset 0 0 10px rgba(255, 255, 255, 0.05);
-          }
-        }
-
-        .neon-glow {
-          box-shadow: 
-            0 0 10px rgba(255, 255, 255, 0.2), 
-            0 0 20px rgba(255, 255, 255, 0.1), 
-            0 0 30px rgba(255, 255, 255, 0.05);
-        }
-
-        @media (min-width: 768px) {
-          .neon-glow {
-            box-shadow: 
-              0 0 20px rgba(255, 255, 255, 0.2), 
-              0 0 40px rgba(255, 255, 255, 0.1), 
-              0 0 60px rgba(255, 255, 255, 0.05);
-          }
-        }
-
-        .glass-card {
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass-card:hover {
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px) scale(1.01);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        @media (min-width: 768px) {
-          .glass-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-          }
-        }
-
-        .mono-text {
-          font-family: 'JetBrains Mono', monospace;
-          letter-spacing: 0.05em;
-        }
-
-        .glitch-text {
-          position: relative;
-          color: #ffffff;
-          font-weight: 800;
-        }
-
-        .glitch-text::before,
-        .glitch-text::after {
-          content: attr(data-text);
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        @media (min-width: 768px) {
-          .glitch-text:hover::before,
-          .glitch-text:hover::after {
-            opacity: 0.8;
-          }
-
-          .glitch-text:hover::before {
-            animation: glitch-1 0.5s infinite;
-            color: #ffffff;
-            z-index: -1;
-            filter: blur(1px);
-          }
-
-          .glitch-text:hover::after {
-            animation: glitch-2 0.5s infinite;
-            color: #ffffff;
-            z-index: -2;
-            filter: blur(1px);
-          }
-        }
-
-        @keyframes glitch-1 {
-          0%, 100% { transform: translate(0); }
-          20% { transform: translate(-1px, 1px); }
-          40% { transform: translate(-1px, -1px); }
-          60% { transform: translate(1px, 1px); }
-          80% { transform: translate(1px, -1px); }
-        }
-
-        @media (min-width: 768px) {
-          @keyframes glitch-1 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-          }
-        }
-
-        @keyframes glitch-2 {
-          0%, 100% { transform: translate(0); }
-          20% { transform: translate(1px, -1px); }
-          40% { transform: translate(1px, 1px); }
-          60% { transform: translate(-1px, -1px); }
-          80% { transform: translate(-1px, 1px); }
-        }
-
-        @media (min-width: 768px) {
-          @keyframes glitch-2 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(2px, -2px); }
-            40% { transform: translate(2px, 2px); }
-            60% { transform: translate(-2px, -2px); }
-            80% { transform: translate(-2px, 2px); }
-          }
-        }
-
-        .scanline {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .scanline::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-          animation: scan 3s ease-in-out infinite;
-        }
-
-        @keyframes scan {
-          0% { left: -100%; }
-          100% { left: 100%; }
-        }
-
-        .terminal-cursor {
-          display: inline-block;
-          background-color: #ffffff;
-          width: 2px;
-          animation: blink 1s infinite;
-        }
-
-        @media (min-width: 768px) {
-          .terminal-cursor {
-            width: 3px;
-          }
-        }
-
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-
-        .ascii-art {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.5rem;
-          line-height: 1.1;
-          white-space: pre;
-          color: rgba(255, 255, 255, 0.8);
-          overflow-x: auto;
-        }
-
-        @media (min-width: 640px) {
-          .ascii-art {
-            font-size: 0.75rem;
-          }
-        }
-
-        @media (min-width: 768px) {
-          .ascii-art {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.3);
-          }
-        }
-
-        @media (min-width: 1024px) {
-          .ascii-art {
-            font-size: 1.25rem;
-          }
-        }
-
-        @media (min-width: 1280px) {
-          .ascii-art {
-            font-size: 1.5rem;
-          }
-        }
-
-        .data-stream {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .data-stream::after {
-          content: '0101010101010101';
-          position: absolute;
-          top: 50%;
-          left: -100%;
-          transform: translateY(-50%);
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 8px;
-          color: rgba(255, 255, 255, 0.3);
-          animation: data-flow 4s linear infinite;
-        }
-
-        @media (min-width: 768px) {
-          .data-stream::after {
-            content: '01010101010101010101010101010101';
-            font-size: 10px;
-          }
-        }
-
-        @keyframes data-flow {
-          0% { left: -100%; }
-          100% { left: 100%; }
-        }
-
-        .circuit-pattern {
-          background-image: 
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-          background-size: 10px 10px;
-        }
-
-        @media (min-width: 768px) {
-          .circuit-pattern {
-            background-image: 
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-          }
-        }
-
-        .hover-lift {
-          transition: all 0.3s ease;
-        }
-
-        .hover-lift:hover {
-          transform: translateY(-2px);
-          filter: brightness(1.05);
-        }
-
-        @media (min-width: 768px) {
-          .hover-lift:hover {
-            transform: translateY(-5px);
-            filter: brightness(1.1);
-          }
-        }
-
-        .mobile-menu-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.95);
-          backdrop-filter: blur(10px);
-          z-index: 50;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        /* Mobile-first ASCII adjustments */
-        .mobile-ascii {
-          font-size: 0.4rem;
-          line-height: 0.9;
-          overflow-x: auto;
-          padding: 0 1rem;
-        }
-
-        @media (min-width: 380px) {
-          .mobile-ascii {
-            font-size: 0.5rem;
-          }
-        }
-
-        @media (min-width: 640px) {
-          .mobile-ascii {
-            font-size: 0.7rem;
-            padding: 0;
-          }
-        }
-      `}</style>
+      
 
       {/* Terminal Background */}
       <div className="terminal-bg">
@@ -476,7 +135,10 @@ const ProjectAtlasLanding = () => {
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <a href="#features" className="mono-text hover:text-gray-300 transition-colors text-sm lg:text-base">[features]</a>
               <a href="#algorithm" className="mono-text hover:text-gray-300 transition-colors text-sm lg:text-base">[algorithm]</a>
-              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer text-sm lg:text-base" onClick={() => opencontact('/contact')}>[contact]</p>
+              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer text-sm lg:text-base"
+              onClick={()=>{
+                opencontact('/contact')
+              }}>[contact]</p>
               <button className="bg-white text-black px-4 lg:px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer text-sm lg:text-base">
                 JOIN_NETWORK
               </button>
@@ -530,7 +192,7 @@ const ProjectAtlasLanding = () => {
                 >
                   [algorithm]
                 </a>
-                <a
+                <p
                   href="#contact"
                   className="block mono-text hover:text-gray-300 transition-colors text-sm"
                   onClick={() => {
@@ -539,7 +201,7 @@ const ProjectAtlasLanding = () => {
                   }}
                 >
                   [contact]
-                </a>
+                </p>
                 <button className="w-full bg-white text-black px-4 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow text-sm">
                   JOIN_NETWORK
                 </button>
@@ -558,14 +220,29 @@ const ProjectAtlasLanding = () => {
               </h1>
             </div>
 
-            {/* Desktop CRUMBS - ASCII art */}
+            {/* Desktop CRUMBS - ASCII art with breakable animation */}
             <div className="hidden sm:block ascii-art mb-8 text-center">
-{`    ░█████╗░██████╗░██╗░░░██╗███╗░░░███╗██████╗░░██████╗
-    ██╔══██╗██╔══██╗██║░░░██║████╗░████║██╔══██╗██╔════╝
-    ██║░░╚═╝██████╔╝██║░░░██║██╔████╔██║██████╦╝╚█████╗░
-    ██║░░██╗██╔══██╗██║░░░██║██║╚██╔╝██║██╔══██╗░╚═══██╗
-    ╚█████╔╝██║░░██║╚██████╔╝██║░╚═╝░██║██████╦╝██████╔╝
-    ░╚════╝░╚═╝░░╚═╝░╚═════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░`}
+              <div 
+                className="crumbs-container"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {/* Normal state */}
+                <div className="crumbs-normal">
+                  {completeASCII}
+                </div>
+
+                {/* Broken state */}
+                <div className="crumbs-broken">
+                  <div className="crumbs-broken-container">
+                    {crumbsParts.map((part, index) => (
+                      <div key={index} className="crumbs-part">
+                        {part}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <h2 className="text-sm sm:text-lg md:text-2xl lg:text-4xl font-semibold mb-4 md:mb-6 text-gray-200 mono-text">
@@ -728,8 +405,7 @@ const ProjectAtlasLanding = () => {
           </div>
         </section>
 
-        <Calculator />
-
+<Calculator />
         {/* Call to Action */}
         <section className="py-8 md:py-20">
           <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
