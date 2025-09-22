@@ -3,6 +3,8 @@ import Calculator from './assets/components/calculator'
 import Contact from './assets/components/contact'
 import NotFound from './assets/components/NotFound'
 import Uploadbtn from './assets/components/uploadbtn'
+import Joinnet from './assets/components/Join'
+import Auth from './assets/components/auth'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/uploadbtn" element={<Uploadbtn />} />
+          <Route path="/join" element={<Joinnet />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
     </Router>

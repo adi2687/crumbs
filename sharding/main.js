@@ -18,6 +18,4 @@ function splitImage(imagePath, chunkSize) {
         part++;
     }
 }
-
-// Example usage: split into 200KB chunks
 splitImage("aryan.webp", 5 * 1024);

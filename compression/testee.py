@@ -79,7 +79,7 @@ def compress_video(video_path, output_path, crf=28):
             "-acodec", "aac", output_path
         ]
         subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
+    
         new_size = os.path.getsize(output_path)
         saved = original_size - new_size
         percent = (saved / original_size) * 100

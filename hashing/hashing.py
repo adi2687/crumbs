@@ -6,4 +6,4 @@ def file_hash(path):
         for chunk in iter(lambda: f.read(4096), b''):
             h.update(chunk)
     return h.hexdigest()
-print(file_hash("IMG_9201.jpg"))
+print(file_hash("./test.tx"))

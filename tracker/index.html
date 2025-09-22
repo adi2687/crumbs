@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crumbs File Server</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    input, button { margin: 5px 0; }
+    #peers { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Crumbs File Server</h1>
+
+  <h2>Upload File</h2>
+  <input type="file" id="uploadFile">
+  <button onclick="uploadFile()">Upload</button>
+  <p id="uploadStatus"></p>
+
+  <h2>Download File</h2>
+  <input type="text" id="downloadFileName" placeholder="Enter filename">
+  <button onclick="downloadFile()">Download</button>
+  <p id="downloadStatus"></p>
+
+  <h2>Online Peers</h2>
+  <button onclick="getPeers()">Refresh</button>
+  <div id="peers"></div>
+
+  <script>
+    const SERVER = "http://192.168.137.249:7000"; // change if needed
+    const peerId = `peer_${Math.floor(Math.random() * 1000)}`;
+
+    // Heartbeat every 5s
+    setInterval(async () => {
+      try {
+        await fetch(`${SERVER}/heartbeat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ peerId })
+        });
+      } catch (err) {
+        console.error("Heartbeat failed:", err);
+      }
+    }, 5000);
+
+    async function uploadFile() {
+      const fileInput = document.getElementById("uploadFile");
+      if (!fileInput.files.length) return alert("Select a file first!");
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch(`${SERVER}/upload`, { method: "POST", body: formData });
+        const data = await res.json();
+        document.getElementById("uploadStatus").innerText = `Uploaded: ${data.filename}`;
+      } catch (err) {
+        document.getElementById("uploadStatus").innerText = "Upload failed";
+        console.error(err);
+      }
+    }
+    async function register() {
+        const register=await fetch(`${SERVER}/register`,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({peerId})
+        })
+        const data=await register.json();
+        if(data.ok){
+            alert('done bro ')
+        }
+    }
+    async function downloadFile() {
+      const filename = document.getElementById("downloadFileName").value.trim();
+      if (!filename) return alert("Enter a filename!");
+      try {
+        const res = await fetch(`${SERVER}/files/${filename}`);
+        if (!res.ok) throw new Error("File not found");
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        document.getElementById("downloadStatus").innerText = `Downloaded: ${filename}`;
+      } catch (err) {
+        document.getElementById("downloadStatus").innerText = "Download failed";
+        console.error(err);
+      }
+    }
+
+    async function getPeers() {
+      try {
+        const res = await fetch(`${SERVER}/peers`);
+        const data = await res.json();
+        document.getElementById("peers").innerText = `Online (${data.count}): ${data.online.join(", ")}`;
+      } catch (err) {
+        document.getElementById("peers").innerText = "Failed to fetch peers";
+        console.error(err);
+      }
+    }
+    register()
+    // Auto-refresh peers every 10s
+    setInterval(getPeers, 10000);
+
+  </script>
+</body>
+</html>
