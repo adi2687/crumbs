@@ -139,6 +139,11 @@ const ProjectAtlasLanding = () => {
               onClick={()=>{
                 opencontact('/contact')
               }}>[contact]</p>
+              <p className="mono-text hover:text-gray-300 transition-colors cursor-pointer text-sm lg:text-base"
+              onClick={()=>{
+                opencontact('/demo')
+              }}>[demo]</p>
+              
               <button className="bg-white text-black px-4 lg:px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer text-sm lg:text-base" 
               onClick={()=>{
                 opencontact('/auth')
@@ -204,6 +209,16 @@ const ProjectAtlasLanding = () => {
                   }}
                 >
                   [contact]
+                </p>
+                <p
+                  href="#demo"
+                  className="block mono-text hover:text-gray-300 transition-colors text-sm"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    opencontact('/demo')
+                  }}
+                >
+                  [demo]
                 </p>
                 <button className="w-full bg-white text-black px-4 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow text-sm"
                 onClick={opencontact('/auth')}>

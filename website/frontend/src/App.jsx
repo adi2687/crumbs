@@ -5,6 +5,7 @@ import NotFound from './assets/components/NotFound'
 import Uploadbtn from './assets/components/uploadbtn'
 import Joinnet from './assets/components/Join'
 import Auth from './assets/components/auth'
+import Demo from './assets/components/animations'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/uploadbtn" element={<Uploadbtn />} />
           <Route path="/join" element={<Joinnet />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
     </Router>

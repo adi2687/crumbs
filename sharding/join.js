@@ -14,3 +14,4 @@ mergeImageChunks(
     ["aryan.webp.part1", "aryan.webp.part2", "aryan.webp.part3", "aryan.webp.part4", "aryan.webp.part5"],
     ""
 );
+export default mergeImageChunks
