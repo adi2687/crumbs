@@ -237,13 +237,11 @@ const ProjectAtlasLanding = () => {
         )}
 
         {/* Hero Section */}
-        <section className="relative z-10 pt-24 sm:pt-32 md:pt-40 pb-12 md:pb-32">
+        <section className="relative z-10 pt-24 sm:pt-32 md:pt-40 pb-12 md:pb-32" >
           <div className="max-w-7xl mx-auto px-4 md:px-6 text-center">
             {/* Mobile CRUMBS - Simple text version */}
-            <div className="block sm:hidden mb-6">
-              <h1 className="text-3xl font-bold mono-text glitch-text" data-text="CRUMBS">
-                CRUMBS
-              </h1>
+            <div className="block sm:hidden mb-6 text-xs text-gray-400">
+              {completeASCII}
             </div>
 
             {/* Desktop CRUMBS - ASCII art with breakable animation */}
@@ -272,7 +270,7 @@ const ProjectAtlasLanding = () => {
             </div>
 
             <h2 className="text-sm sm:text-lg md:text-2xl lg:text-4xl font-semibold mb-4 md:mb-6 text-gray-200 mono-text">
-              DECENTRALIZED_CLOUD_STORAGE_NETWORK
+              DECENTRALIZED_CLOUD_STORAGE_NETWORK 
             </h2>
 
             <div className="glass-card rounded-lg p-4 md:p-8 mb-8 md:mb-12 max-w-4xl mx-auto neon-border">
