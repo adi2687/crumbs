@@ -153,8 +153,9 @@ const ProjectAtlasLanding = () => {
             </div>
 
             {/* Mobile Menu Button */}
+            
             <button
-              className="md:hidden p-2 hover:bg-white hover:bg-opacity-10 rounded transition-all"
+              className="md:hidden p-2 hover:bg-black hover:bg-opacity-10 rounded transition-all cursor-pointer"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <Menu className="w-5 h-5" />
@@ -180,7 +181,7 @@ const ProjectAtlasLanding = () => {
                 <h2 className="text-lg font-bold mono-text">MENU</h2>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 hover:bg-white hover:bg-opacity-10 rounded"
+                  className="p-2 hover:bg-black hover:bg-opacity-10 rounded"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -220,10 +221,16 @@ const ProjectAtlasLanding = () => {
                 >
                   [demo]
                 </p>
-                <button className="w-full bg-white text-black px-4 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow text-sm"
-                onClick={opencontact('/auth')}>
+                {mobileMenuOpen ? (
+                  <></>
+                ) : (
+                  <button className="w-full bg-white text-black px-4 py-3 mono-text font-bold hover:bg-gray-200 transition-all neon-glow text-sm"
+                onClick={
+                  opencontact('/auth')}
+                  >
                   JOIN_NETWORK
                 </button>
+                )}
               </div>
             </div>
           </div>
