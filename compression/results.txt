@@ -1,0 +1,25 @@
+PS C:\Users\Aditya Kurani\Desktop\assignemnts\compression> python .\testee.py
+[✓] Compressed image: media\Screenshot (603).png → compressed\Screenshot (603).webp
+    [💾] Saved: 68.98 KB (78.68%)
+[✓] Compressed image: media\Screenshot (604).png → compressed\Screenshot (604).webp
+    [💾] Saved: 307.00 KB (95.86%)
+[✓] Compressed image: media\Screenshot (605).png → compressed\Screenshot (605).webp
+    [💾] Saved: 317.63 KB (93.26%)
+[✓] Compressed image: media\Screenshot (606).png → compressed\Screenshot (606).webp
+    [💾] Saved: 249.82 KB (92.64%)
+[✓] Compressed image: media\Screenshot (607).png → compressed\Screenshot (607).webp
+    [💾] Saved: 367.58 KB (94.55%)
+[✓] Compressed image: media\Screenshot (608).png → compressed\Screenshot (608).webp
+    [💾] Saved: 437.92 KB (91.25%)
+[✓] Compressed image: media\Screenshot (609).png → compressed\Screenshot (609).webp
+    [💾] Saved: 392.06 KB (95.82%)
+[✓] Compressed image: media\Screenshot (610).png → compressed\Screenshot (610).webp
+    [💾] Saved: 689.79 KB (92.49%)
+[✓] Compressed image: media\Screenshot (611).png → compressed\Screenshot (611).webp
+    [💾] Saved: 200.53 KB (89.13%)
+[✓] Compressed image: media\Screenshot (612).png → compressed\Screenshot (612).webp
+    [💾] Saved: 391.57 KB (96.64%)
+[✓] Compressed image: media\Screenshot (618).png → compressed\Screenshot (618).webp
+    [💾] Saved: 252.55 KB (90.58%)
+[✓] Compressed image: media\Screenshot (620).png → compressed\Screenshot (620).webp
+    [💾] Saved: 188.20 KB (94.33%)
