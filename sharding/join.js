@@ -1,5 +1,5 @@
-const fs = require("fs");
-
+// const fs = require("fs");
+import fs from "fs";
 function mergeImageChunks(chunkFiles, outputPath) {
     const name=(chunkFiles[0].split('.')[0])
     outputPath=`${name}restor.png`

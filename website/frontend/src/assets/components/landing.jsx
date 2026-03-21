@@ -240,7 +240,9 @@ const ProjectAtlasLanding = () => {
         <section className="relative z-10 pt-24 sm:pt-32 md:pt-40 pb-12 md:pb-32" >
           <div className="max-w-7xl mx-auto px-4 md:px-6 text-center">
             {/* Mobile CRUMBS - Simple text version */}
-            <div className="block sm:hidden mb-6 text-xs text-gray-400">
+            <div className="block sm:hidden mb-6 text-gray-400" style={{
+              fontSize:"10px"
+            }}>
               {completeASCII}
             </div>
 
