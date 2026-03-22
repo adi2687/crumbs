@@ -6,6 +6,7 @@ import Uploadbtn from './assets/components/uploadbtn'
 import Joinnet from './assets/components/Join'
 import Auth from './assets/components/auth'
 import Demo from './assets/components/animations'
+import Profile from './assets/components/profile'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/auth" element={<Auth />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="*" element={<NotFound />} />
+          <Route path='/profile' element={<Profile/>} />
         </Routes>
     </Router>
   )

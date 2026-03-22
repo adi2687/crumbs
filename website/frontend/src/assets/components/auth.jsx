@@ -155,6 +155,43 @@ const CrumbsAuth = () => {
     }
   };
 
+  const authenticateUser = async () => {
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const payload = isLogin 
+        ? { username: formData.username, password: formData.password }
+        : { 
+            username: formData.username, 
+            email: formData.email, 
+            password: formData.password,
+            deviceId: formData.deviceId || `DEV_${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+          };
+
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || 'Authentication failed');
+      }
+
+      // Store token in localStorage
+      localStorage.setItem('crumbs_token', data.token);
+      localStorage.setItem('crumbs_user', JSON.stringify(data.user));
+
+      return data;
+    } catch (error) {
+      console.error('Authentication error:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async () => {
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
@@ -163,11 +200,24 @@ const CrumbsAuth = () => {
     }
 
     setIsLoading(true);
-    await simulateAuth();
-    setIsLoading(false);
     
-    // Simulate success
-    console.log('Authentication successful:', formData);
+    try {
+      await simulateAuth();
+      const data = await authenticateUser();
+      
+      // Show success and redirect
+      console.log('Authentication successful:', data);
+      navigate('/profile'); // Redirect to profile page
+      
+    } catch (error) {
+      // Show error message
+      console.error('Authentication failed:', error.message);
+      setFormErrors({ 
+        general: error.message || 'AUTHENTICATION_FAILED' 
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getPasswordStrengthColor = () => {
@@ -194,7 +244,7 @@ const CrumbsAuth = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <style jsx>{`
+      <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
         
         .mono-text {
@@ -779,6 +829,16 @@ const CrumbsAuth = () => {
                         </button>
                       </div>
                       <p className="text-xs text-gray-500 mono-text">UNIQUE_IDENTIFIER_FOR_YOUR_NODE</p>
+                    </div>
+                  )}
+
+                  {/* General Error Display */}
+                  {formErrors.general && (
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2 text-red-400 text-sm mono-text bg-red-900 bg-opacity-20 p-3 rounded border border-red-500 border-opacity-30">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{formErrors.general}</span>
+                      </div>
                     </div>
                   )}
 
