@@ -1,15 +1,16 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 // Load env vars
 dotenv.config();
 
 // Route files
-import auth from './routes/auth.js';
+import auth from "./routes/auth.js";
+import { response } from "express";
 
 const app = express();
 
@@ -19,8 +20,8 @@ const limiter = rateLimit({
   max: 100, // Limit each IP to 100 requests per windowMs
   message: {
     success: false,
-    message: 'Too many requests from this IP, please try again later.'
-  }
+    message: "Too many requests from this IP, please try again later.",
+  },
 });
 
 // Body parser middleware
@@ -28,32 +29,43 @@ app.use(express.json());
 
 // Security middleware
 app.use(helmet());
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(limiter);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/crumbs_auth', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB connection error:', err));
-app.get("/",(req,res)=>{
-  res.status(200).json({msg:"backend endpoint",success:true})
-})
+await mongoose
+  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/crumbs_auth", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log("MongoDB connection error:", err));
+app.get("/", (req, res) => {
+  res.status(200).json({ msg: "backend endpoint", success: true });
+});
 // Mount routers
-app.use('/api/auth', auth);
+app.use("/api/auth", auth);
 
+app.get("/test/db", async (req, res) => {
+  const response = await mongoose
+    .connect(process.env.MONGO_URI || "mongodb://localhost:27017/crumbs_auth", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+  return res.json({response})    
+});
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -62,15 +74,15 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong on the server'
+    message: "Something went wrong on the server",
   });
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use("*", (req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found'
+    message: "Route not found",
   });
 });
 
@@ -81,7 +93,7 @@ const server = app.listen(PORT, () => {
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
+process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`);
   // Close server & exit process
   server.close(() => process.exit(1));
