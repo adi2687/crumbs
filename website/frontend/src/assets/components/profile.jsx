@@ -280,7 +280,7 @@ const Profile = () => {
               <h1 className="text-lg md:text-2xl font-bold mono-text cursor-pointer">CRUMBS</h1>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2 text-sm mono-text">
               <div className="flex items-center space-x-1">
@@ -288,6 +288,14 @@ const Profile = () => {
                 <span className="text-gray-400">ONLINE</span>
               </div>
             </div>
+            <button 
+              onClick={() => navigate('/users')}
+              className="flex items-center space-x-2 mono-text hover:text-gray-300 transition-colors neon-glow px-3 py-2 rounded"
+            >
+              <Users className="w-4 h-4" />
+              <span className="text-sm cursor-pointer">Peers</span>
+            </button>
+
             <button 
               onClick={handleLogout}
               className="flex items-center space-x-2 mono-text hover:text-gray-300 transition-colors neon-glow px-3 py-2 rounded"

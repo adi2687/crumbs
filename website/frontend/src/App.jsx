@@ -48,7 +48,7 @@ const AppWrapper = () => {
       <Route path="*" element={<NotFound />} />
       <Route path='/profile' element={<Profile/>} /> 
       <Route path="/analytics" element={<Analytics />} />
-      <Route path="/admin" element={<UsersPage />} />
+      <Route path="/users" element={<UsersPage />} />
       <Route path="/upload" element={<UploadPage />} />
     </Routes>
   );
