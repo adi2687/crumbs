@@ -10,15 +10,22 @@ peers = {
 }
 
 def is_offline(peer_type, hour, day):
-  if peer_type == "student":
-    return hour < 7 or hour >= 1 or day >= 5
-  if peer_type == "flaky":
-    return random.random() < 0.15
-  if peer_type == "office":
-    return hour < 9 or hour >= 18 or day >= 5
-  if peer_type == "always_on":
-    return random.random() < 0.005
-  return False
+    if peer_type == 'student':
+        # online: weekdays 8am-11pm
+        if day >= 5: return True                    # weekend — offline
+        if hour < 8 or hour >= 23: return True      # night — offline
+        return random.random() < 0.03               # rarely drops during day
+
+    if peer_type == 'flaky':
+        return random.random() < 0.15               # random drops anytime
+
+    if peer_type == 'office':
+        if day >= 5: return True                    # weekend — offline
+        if hour < 9 or hour >= 18: return True      # off hours — offline
+        return random.random() < 0.02               # rarely drops at work
+
+    if peer_type == 'always_on':
+        return random.random() < 0.005
 
 logs = []
 start = datetime.now() - timedelta(days=14)
@@ -43,7 +50,7 @@ for day_offset in range(14):
       })
 
 
-with open("logs/heartbeats1.json", "w") as f:
+with open("heartbeats1.json", "w") as f:
 
     f.write("[")
     for l in logs: f.write(json.dumps(l) + ",\n")

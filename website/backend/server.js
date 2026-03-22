@@ -10,7 +10,6 @@ dotenv.config();
 
 // Route files
 import auth from "./routes/auth.js";
-import { response } from "express";
 
 const app = express();
 
