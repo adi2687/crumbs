@@ -42,7 +42,9 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/crumbs_auth
 })
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.log('MongoDB connection error:', err));
-
+app.get("/",(req,res)=>{
+  res.status(200).json({msg:"backend endpoint",success:true})
+})
 // Mount routers
 app.use('/api/auth', auth);
 
