@@ -292,6 +292,12 @@ const ProjectAtlasLanding = () => {
               </button>
               <button className="border-2 border-white px-4 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all cursor-pointer text-xs sm:text-sm md:text-base">
                 LEARN_MORE
+              </button> 
+              <button className="border-2 border-white px-4 md:px-8 py-3 md:py-4 font-bold mono-text hover:bg-white hover:text-black transition-all cursor-pointer text-xs sm:text-sm md:text-base" 
+              onClick={()=>{
+                opencontact("/auth")
+              }}>
+                LOGIN/SIGNUP
               </button>
             </div>
           </div>

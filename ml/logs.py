@@ -1,58 +1,86 @@
-import json
-import random
+# Cell 2 — replace entire fake data generator with this
+
+import json, random, os
 from datetime import datetime, timedelta
 
+os.makedirs('logs', exist_ok=True)
+
 peers = {
-  "peer-A3F2": {"type": "student"},
-  "peer-B71C": {"type": "flaky"},
-  "peer-D09E": {"type": "office"},
-  "peer-F44A": {"type": "always_on"},
+    'peer-A3F2': 'student',
+    'peer-B71C': 'flaky',
+    'peer-D09E': 'office',
+    'peer-F44A': 'always_on',
 }
 
-def is_offline(peer_type, hour, day):
+def get_signal(peer_type, hour, day):
+    """
+    Returns (missed, latency, label)
+    Each node has a CLEAN deterministic pattern
+    so the model has no excuse not to learn it
+    """
+
+    # student — offline nights + weekends
     if peer_type == 'student':
-        # online: weekdays 8am-11pm
-        if day >= 5: return True                    # weekend — offline
-        if hour < 8 or hour >= 23: return True      # night — offline
-        return random.random() < 0.03               # rarely drops during day
+        if day >= 5 or hour < 8 or hour >= 23:
+            return 3, 7000, 1          # clearly offline
+        return 0, random.randint(100, 300), 0   # clearly online
 
+    # flaky — randomly drops, but when it drops it's obvious
     if peer_type == 'flaky':
-        return random.random() < 0.15               # random drops anytime
+        if random.random() < 0.15:
+            return 3, 7000, 1          # clearly offline
+        return 0, random.randint(100, 300), 0
 
+    # office worker — ONLY online weekdays 9am-6pm
     if peer_type == 'office':
-        if day >= 5: return True                    # weekend — offline
-        if hour < 9 or hour >= 18: return True      # off hours — offline
-        return random.random() < 0.02               # rarely drops at work
+        if day >= 5 or hour < 9 or hour >= 18:
+            return 3, 7000, 1          # clearly offline
+        return 0, random.randint(100, 300), 0
 
+    # always on — almost never offline
     if peer_type == 'always_on':
-        return random.random() < 0.005
+        if random.random() < 0.005:
+            return 3, 7000, 1
+        return 0, random.randint(100, 300), 0
 
 logs = []
-start = datetime.now() - timedelta(days=14)
+start    = datetime.now() - timedelta(days=14)
 node2idx = {p: i for i, p in enumerate(peers)}
 
 for day_offset in range(14):
-  for minute in range(0, 1440, 1):
-    ts = start + timedelta(days=day_offset, minutes=minute)
-    hour, day = ts.hour, ts.weekday()
-    for peerId, meta in peers.items():
-      offline = is_offline(meta["type"], hour, day)
-      missed = random.randint(1,3) if offline else 0
-      latency = random.randint(2000,8000) if offline else random.randint(100,500)
-      logs.append({
-        "peerId": peerId,
-        "node_idx": node2idx[peerId],
-        "missedCount": missed,
-        "latencyMs": latency,
-        "day": day,
-        "hour": hour,
-        "label": 1 if offline else 0
-      })
+    for minute in range(0, 1440, 1):
+        ts   = start + timedelta(days=day_offset, minutes=minute)
+        hour = ts.hour
+        day  = ts.weekday()
+        for peerId, ptype in peers.items():
+            missed, latency, label = get_signal(ptype, hour, day)
+            logs.append({
+                'peerId':      peerId,
+                'node_idx':    node2idx[peerId],
+                'missedCount': missed,
+                'latencyMs':   latency,
+                'day':         day,
+                'hour':        hour,
+                'label':       label
+            })
 
-
-with open("heartbeats1.json", "w") as f:
-
+with open('logs/heartbeats.jsonl', 'w') as f:
     f.write("[")
-    for l in logs: f.write(json.dumps(l) + ",\n")
+    for l in logs:
+        f.write(json.dumps(l) + ',\n')
     f.write("]")
-print(f"Generated {len(logs)} records")
+
+# verify the patterns look right
+from collections import defaultdict
+node_recs = defaultdict(list)
+for l in logs:
+    node_recs[l['peerId']].append(l)
+
+print(f"{'Node':<15} {'Total':<10} {'Offline%':<12} {'Avg missed':<14} {'Expected offline%'}")
+print("-" * 65)
+expected = {'peer-A3F2': '~40%', 'peer-B71C': '~15%', 'peer-D09E': '~60%', 'peer-F44A': '~0.5%'}
+for pid, recs in node_recs.items():
+    total   = len(recs)
+    offline = sum(r['label'] for r in recs)
+    avg_m   = sum(r['missedCount'] for r in recs) / total
+    print(f"{pid:<15} {total:<10} {offline/total*100:<12.1f} {avg_m:<14.2f} {expected[pid]}")
