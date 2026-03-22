@@ -552,7 +552,7 @@ const CrumbsAuth = () => {
       `}</style>
 
       {/* Loading Overlay */}
-      {isLoading && (
+      {/* {!isLoading && (
         <div className="loading-overlay">
           <div className="loading-content">
             <div className="glass-card rounded-lg p-8 neon-border">
@@ -571,7 +571,7 @@ const CrumbsAuth = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Terminal Background */}
       <div className="terminal-bg min-h-screen">
@@ -850,8 +850,10 @@ const CrumbsAuth = () => {
                     disabled={isLoading}
                     className="w-full bg-white text-black py-3 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Terminal className="w-4 h-4 mr-2" />
-                    {isLoading ? 'PROCESSING...' : (isLogin ? 'ACCESS_NETWORK' : 'JOIN_NETWORK')}
+                    {/* <Terminal className="w-4 h-4 mr-2" /> */}
+                    {isLoading ? (
+                      <Loader className="w-7 h-8 mr-2 animate-spin" /> 
+                    ) : (isLogin ? 'ACCESS_NETWORK' : 'JOIN_NETWORK')}
                     {!isLoading && <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />}
                   </button>
 
