@@ -292,10 +292,9 @@ const Profile = () => {
               onClick={() => navigate('/users')}
               className="flex items-center space-x-2 mono-text hover:text-gray-300 transition-colors neon-glow px-3 py-2 rounded"
             >
-              <Users className="w-4 h-4" />
-              <span className="text-sm cursor-pointer">Peers</span>
+              <User className="w-4 h-4" />
+              <span className="text-sm cursor-pointer">Users</span>
             </button>
-
             <button 
               onClick={handleLogout}
               className="flex items-center space-x-2 mono-text hover:text-gray-300 transition-colors neon-glow px-3 py-2 rounded"
