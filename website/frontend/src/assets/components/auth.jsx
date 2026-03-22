@@ -157,7 +157,8 @@ const CrumbsAuth = () => {
 
   const authenticateUser = async () => {
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'; 
+      const backend_address = import.meta.env.VITE_BACKEND_ADDRESS || 'http://localhost:5000';
       const payload = isLogin 
         ? { username: formData.username, password: formData.password }
         : { 
@@ -167,7 +168,7 @@ const CrumbsAuth = () => {
             deviceId: formData.deviceId || `DEV_${Math.random().toString(36).substr(2, 9).toUpperCase()}`
           };
 
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`${backend_address}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

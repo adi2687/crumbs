@@ -19,7 +19,8 @@ const NotFound = () => {
         Not Found
       </FuzzyText>
       <br />
-      <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer rounded">
+      <button className="bg-white text-black px-6 py-2 mono-text font-bold hover:bg-gray-200 transition-all neon-glow cursor-pointer rounded" 
+      onClick={()=>navigate("/auth")}>
         JOIN_NETWORK
       </button>
       <br />
