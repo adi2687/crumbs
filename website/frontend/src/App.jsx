@@ -7,7 +7,7 @@ import Joinnet from './assets/components/Join'
 import Auth from './assets/components/auth'
 import Demo from './assets/components/animations'
 import Profile from './assets/components/profile' 
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom' 
 const App = () => {
   return (
