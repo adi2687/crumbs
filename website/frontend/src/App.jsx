@@ -8,6 +8,8 @@ import Auth from './assets/components/auth'
 import Demo from './assets/components/animations'
 import Profile from './assets/components/profile' 
 import { Analytics } from "@vercel/analytics/react"
+import UsersPage from './assets/components/users'
+import UploadPage from './assets/components/upload'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom' 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
           <Route path='/profile' element={<Profile/>} /> 
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/admin" element={<UsersPage />} />
+          <Route path="/upload" element={<UploadPage />} />
         </Routes>
     </Router>
   )
