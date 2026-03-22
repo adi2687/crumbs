@@ -280,7 +280,7 @@ const Profile = () => {
               <h1 className="text-lg md:text-2xl font-bold mono-text cursor-pointer">CRUMBS</h1>
             </div>
           </div>
-
+          
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2 text-sm mono-text">
               <div className="flex items-center space-x-1">
