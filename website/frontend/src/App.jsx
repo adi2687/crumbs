@@ -10,6 +10,7 @@ import Profile from './assets/components/profile'
 import { Analytics } from "@vercel/analytics/react"
 import UsersPage from './assets/components/users'
 import UploadPage from './assets/components/upload'
+import SettingsPage from './assets/components/settings'
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 
@@ -21,7 +22,7 @@ const AppWrapper = () => {
   useEffect(() => {
     const token = localStorage.getItem("crumbs_token");
     const currentPath = location.pathname;
-    const protectedRoutes = ['/profile', '/analytics', '/upload', '/users'];
+    const protectedRoutes = ['/profile', '/analytics', '/upload', '/users', '/settings'];
     
     if (token && !protectedRoutes.includes(currentPath)) {
       if (currentPath === "/") {
@@ -50,6 +51,7 @@ const AppWrapper = () => {
       <Route path="/analytics" element={<Analytics />} />
       <Route path="/users" element={<UsersPage />} />
       <Route path="/upload" element={<UploadPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
     </Routes>
   );
 };

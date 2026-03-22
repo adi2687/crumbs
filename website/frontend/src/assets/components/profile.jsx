@@ -371,7 +371,10 @@ const Profile = () => {
                 </div>
               </div>
 
-              <button className="w-full mt-6 bg-white text-black py-2 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center">
+              <button 
+                onClick={() => navigate('/settings')}
+                className="w-full mt-6 bg-white text-black py-2 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center"
+              >
                 <Settings className="w-4 h-4 mr-2" />
                 SETTINGS
               </button>
