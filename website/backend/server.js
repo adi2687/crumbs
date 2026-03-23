@@ -12,6 +12,7 @@ dotenv.config();
 import auth from "./routes/auth.js";
 import users from "./routes/users.js";
 import uploadToCloudinary from "./routes/uploadToCloudinary.js";
+import settings from "./routes/settings.js";
 const app = express();
 
 // Rate limiting
@@ -53,6 +54,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", auth);
 app.use("/api/users", users);
 app.use("/api/upload", uploadToCloudinary);
+app.use("/api/settings", settings);
 // app.get("/test/db", async (req, res) => {
 //   const response = await mongoose
 //     .connect(process.env.MONGO_URI || "mongodb://localhost:27017/crumbs_auth", {

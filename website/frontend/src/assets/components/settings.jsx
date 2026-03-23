@@ -6,8 +6,7 @@ const SettingsPage = () => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('profile');
-  const [darkMode, setDarkMode] = useState(true);
-  const [notifications, setNotifications] = useState(true);
+  const [saveStatus, setSaveStatus] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -16,11 +15,21 @@ const SettingsPage = () => {
     newPassword: '',
     confirmNewPassword: ''
   });
-  const [saveStatus, setSaveStatus] = useState('');
+  const [settingsData, setSettingsData] = useState({
+    darkMode: true,
+    emailNotifications: true,
+    systemAlerts: true,
+    earningAlerts: true,
+    twoFactorAuth: false,
+    storageLocation: 'DEFAULT_NODE_STORAGE',
+    maxStorageLimit: '1000 GB',
+    compressionLevel: 'MEDIUM'
+  });
   const navigate = useNavigate();
 
+  const API_BASE = import.meta.env.VITE_BACKEND_ADDRESS || 'http://localhost:5000';
+
   useEffect(() => {
-    // Get user data from localStorage
     const token = localStorage.getItem('crumbs_token');
     const user = localStorage.getItem('crumbs_user');
     
@@ -37,6 +46,7 @@ const SettingsPage = () => {
         username: parsedUser.username || '',
         email: parsedUser.email || ''
       });
+      fetchSettings(token);
     } catch (error) {
       console.error('Error parsing user data:', error);
       navigate('/auth');
@@ -44,6 +54,34 @@ const SettingsPage = () => {
       setIsLoading(false);
     }
   }, [navigate]);
+
+  const fetchSettings = async (token) => {
+    try {
+      const response = await fetch(`${API_BASE}/api/settings`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setSettingsData({
+          darkMode: data.data.profile.darkMode,
+          emailNotifications: data.data.notifications.emailNotifications,
+          systemAlerts: data.data.notifications.systemAlerts,
+          earningAlerts: data.data.notifications.earningAlerts,
+          twoFactorAuth: data.data.security.twoFactorAuth,
+          storageLocation: data.data.storage.location,
+          maxStorageLimit: data.data.storage.maxStorageLimit,
+          compressionLevel: data.data.storage.compressionLevel
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -53,14 +91,106 @@ const SettingsPage = () => {
     });
   };
 
+  const handleSettingChange = (key, value) => {
+    setSettingsData({
+      ...settingsData,
+      [key]: value
+    });
+  };
+
   const handleSave = async (section) => {
     setSaveStatus('saving...');
+    const token = localStorage.getItem('crumbs_token');
     
-    // Simulate API call
-    setTimeout(() => {
-      setSaveStatus('saved');
-      setTimeout(() => setSaveStatus(''), 2000);
-    }, 1000);
+    try {
+      let endpoint = '';
+      let body = {};
+
+      switch (section) {
+        case 'profile':
+          endpoint = '/api/settings/profile';
+          body = {
+            username: formData.username,
+            email: formData.email,
+            darkMode: settingsData.darkMode
+          };
+          break;
+        case 'security':
+          if (formData.currentPassword && formData.newPassword) {
+            endpoint = '/api/settings/password';
+            body = {
+              currentPassword: formData.currentPassword,
+              newPassword: formData.newPassword
+            };
+          } else {
+            setSaveStatus('error');
+            setTimeout(() => setSaveStatus(''), 2000);
+            return;
+          }
+          break;
+        case 'notifications':
+          endpoint = '/api/settings/notifications';
+          body = {
+            emailNotifications: settingsData.emailNotifications,
+            systemAlerts: settingsData.systemAlerts,
+            earningAlerts: settingsData.earningAlerts
+          };
+          break;
+        case 'storage':
+          endpoint = '/api/settings/storage';
+          body = {
+            location: settingsData.storageLocation,
+            maxStorageLimit: settingsData.maxStorageLimit,
+            compressionLevel: settingsData.compressionLevel
+          };
+          break;
+        default:
+          return;
+      }
+
+      const response = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setSaveStatus('saved');
+        
+        // Update localStorage if profile was updated
+        if (section === 'profile') {
+          const updatedUser = {
+            ...userData,
+            username: formData.username,
+            email: formData.email
+          };
+          localStorage.setItem('crumbs_user', JSON.stringify(updatedUser));
+          setUserData(updatedUser);
+        }
+        
+        // Clear password fields
+        if (section === 'security') {
+          setFormData({
+            ...formData,
+            currentPassword: '',
+            newPassword: '',
+            confirmNewPassword: ''
+          });
+        }
+      } else {
+        setSaveStatus('error');
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      setSaveStatus('error');
+    }
+    
+    setTimeout(() => setSaveStatus(''), 2000);
   };
 
   const handleReset = () => {
@@ -315,8 +445,8 @@ const SettingsPage = () => {
                   <label className="toggle-switch">
                     <input
                       type="checkbox"
-                      checked={darkMode}
-                      onChange={(e) => setDarkMode(e.target.checked)}
+                      checked={settingsData.darkMode}
+                      onChange={(e) => handleSettingChange('darkMode', e.target.checked)}
                     />
                     <span className="toggle-slider"></span>
                   </label>
@@ -382,7 +512,11 @@ const SettingsPage = () => {
                     <p className="text-xs text-gray-400 mono-text">ADD_EXTRA_SECURITY_LAYER</p>
                   </div>
                   <label className="toggle-switch">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={settingsData.twoFactorAuth}
+                      onChange={(e) => handleSettingChange('twoFactorAuth', e.target.checked)}
+                    />
                     <span className="toggle-slider"></span>
                   </label>
                 </div>
@@ -406,8 +540,8 @@ const SettingsPage = () => {
                     <label className="toggle-switch">
                       <input
                         type="checkbox"
-                        checked={notifications}
-                        onChange={(e) => setNotifications(e.target.checked)}
+                        checked={settingsData.emailNotifications}
+                        onChange={(e) => handleSettingChange('emailNotifications', e.target.checked)}
                       />
                       <span className="toggle-slider"></span>
                     </label>
@@ -419,7 +553,11 @@ const SettingsPage = () => {
                       <p className="text-xs text-gray-400 mono-text">NODE_STATUS_NOTIFICATIONS</p>
                     </div>
                     <label className="toggle-switch">
-                      <input type="checkbox" defaultChecked />
+                      <input
+                        type="checkbox"
+                        checked={settingsData.systemAlerts}
+                        onChange={(e) => handleSettingChange('systemAlerts', e.target.checked)}
+                      />
                       <span className="toggle-slider"></span>
                     </label>
                   </div>
@@ -430,7 +568,11 @@ const SettingsPage = () => {
                       <p className="text-xs text-gray-400 mono-text">REWARD_NOTIFICATIONS</p>
                     </div>
                     <label className="toggle-switch">
-                      <input type="checkbox" defaultChecked />
+                      <input
+                        type="checkbox"
+                        checked={settingsData.earningAlerts}
+                        onChange={(e) => handleSettingChange('earningAlerts', e.target.checked)}
+                      />
                       <span className="toggle-slider"></span>
                     </label>
                   </div>
@@ -449,10 +591,14 @@ const SettingsPage = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm text-gray-400 mono-text mb-2">STORAGE_LOCATION</label>
-                    <select className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded input-field text-white mono-text focus:outline-none bg-transparent text-sm sm:text-base">
-                      <option>DEFAULT_NODE_STORAGE</option>
-                      <option>CUSTOM_DIRECTORY</option>
-                      <option>EXTERNAL_DRIVE</option>
+                    <select 
+                      value={settingsData.storageLocation}
+                      onChange={(e) => handleSettingChange('storageLocation', e.target.value)}
+                      className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded input-field text-white mono-text focus:outline-none bg-transparent text-sm sm:text-base"
+                    >
+                      <option value="DEFAULT_NODE_STORAGE">DEFAULT_NODE_STORAGE</option>
+                      <option value="CUSTOM_DIRECTORY">CUSTOM_DIRECTORY</option>
+                      <option value="EXTERNAL_DRIVE">EXTERNAL_DRIVE</option>
                     </select>
                   </div>
                   
@@ -460,18 +606,23 @@ const SettingsPage = () => {
                     <label className="block text-sm text-gray-400 mono-text mb-2">MAX_STORAGE_LIMIT</label>
                     <input
                       type="text"
-                      defaultValue="1000 GB"
+                      value={settingsData.maxStorageLimit}
+                      onChange={(e) => handleSettingChange('maxStorageLimit', e.target.value)}
                       className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded input-field text-white mono-text focus:outline-none text-sm sm:text-base"
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm text-gray-400 mono-text mb-2">COMPRESSION_LEVEL</label>
-                    <select className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded input-field text-white mono-text focus:outline-none bg-transparent text-sm sm:text-base">
-                      <option>NONE</option>
-                      <option>LOW</option>
-                      <option>MEDIUM</option>
-                      <option>HIGH</option>
+                    <select 
+                      value={settingsData.compressionLevel}
+                      onChange={(e) => handleSettingChange('compressionLevel', e.target.value)}
+                      className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded input-field text-white mono-text focus:outline-none bg-transparent text-sm sm:text-base"
+                    >
+                      <option value="NONE">NONE</option>
+                      <option value="LOW">LOW</option>
+                      <option value="MEDIUM">MEDIUM</option>
+                      <option value="HIGH">HIGH</option>
                     </select>
                   </div>
                 </div>

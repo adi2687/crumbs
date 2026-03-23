@@ -44,6 +44,41 @@ const UserSchema = new mongoose.Schema({
   },
   lastLogin: {
     type: Date
+  },
+  // Settings fields
+  darkMode: {
+    type: Boolean,
+    default: true
+  },
+  emailNotifications: {
+    type: Boolean,
+    default: true
+  },
+  systemAlerts: {
+    type: Boolean,
+    default: true
+  },
+  earningAlerts: {
+    type: Boolean,
+    default: true
+  },
+  twoFactorAuth: {
+    type: Boolean,
+    default: false
+  },
+  storageLocation: {
+    type: String,
+    enum: ['DEFAULT_NODE_STORAGE', 'CUSTOM_DIRECTORY', 'EXTERNAL_DRIVE'],
+    default: 'DEFAULT_NODE_STORAGE'
+  },
+  maxStorageLimit: {
+    type: String,
+    default: '1000 GB'
+  },
+  compressionLevel: {
+    type: String,
+    enum: ['NONE', 'LOW', 'MEDIUM', 'HIGH'],
+    default: 'MEDIUM'
   }
 });
 
