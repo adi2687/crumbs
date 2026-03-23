@@ -22,7 +22,7 @@ const AppWrapper = () => {
   useEffect(() => {
     const token = localStorage.getItem("crumbs_token");
     const currentPath = location.pathname;
-    const protectedRoutes = ['/profile', '/analytics', '/upload', '/users', '/settings'];
+    const protectedRoutes = ['/profile', '/analytics', '/upload', '/users', '/settings','/demo'];
     
     if (token && !protectedRoutes.includes(currentPath)) {
       if (currentPath === "/") {
