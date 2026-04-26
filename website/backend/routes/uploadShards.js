@@ -44,8 +44,11 @@ router.post("/file", upload.single("file"), async (req, res) => {
     return res.status(400).json({ success: false, message: "no file uploaded (field name must be 'file')" });
   }
 
+  const ownerPeerId = req.body.peerId || req.header("x-peer-id") || null;
+
   const { healthy, ranked } = await loadHealthyPeers();
-  const placementPool = healthy.length ? healthy : ranked;
+  const exclude = (list) => (ownerPeerId ? list.filter((p) => p.peerId !== ownerPeerId) : list);
+  const placementPool = exclude(healthy.length ? healthy : ranked);
 
   const fileName = req.file.originalname;
   const buffer = req.file.buffer;
@@ -80,9 +83,11 @@ router.post("/file", upload.single("file"), async (req, res) => {
     size: buffer.length,
     chunkSize: CHUNK_SIZE,
     shardCount: shards.length,
+    owner: ownerPeerId,
     shards,
     placement: {
       strategy: healthy.length ? "healthy-only" : ranked.length ? "best-available" : "tracker-fallback",
+      excludedOwner: ownerPeerId && (healthy.length ? healthy : ranked).some((p) => p.peerId === ownerPeerId),
       candidates: ranked.map((p) => ({ peerId: p.peerId, status: p.status, risk_score: p.risk_score })),
     },
     createdAt: new Date().toISOString(),

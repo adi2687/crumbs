@@ -380,6 +380,14 @@ const Profile = () => {
                 </div>
 
                 <div className="flex items-center space-x-3">
+                  <Cpu className="w-4 h-4 text-cyan-400" />
+                  <div>
+                    <p className="text-xs text-gray-400 mono-text">PEER_ID</p>
+                    <p className="text-sm mono-text text-cyan-300">{userData?.peerId || 'peer-A3F2'}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3">
                   <Shield className="w-4 h-4 text-green-400" />
                   <div>
                     <p className="text-xs text-gray-400 mono-text">ACCOUNT_STATUS</p>

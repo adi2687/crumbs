@@ -38,6 +38,13 @@ const UploadPage = () => {
       const form = new FormData();
       form.append('file', selectedFile);
 
+      let peerId = null;
+      try {
+        const stored = localStorage.getItem('crumbs_user');
+        if (stored) peerId = JSON.parse(stored).peerId || "peer-A3F2";
+      } catch (_) {}
+      if (peerId) form.append('peerId', peerId);
+
       const response = await fetch(`${backend_address}/api/upload/file`, {
         method: 'POST',
         body: form,
@@ -257,6 +264,12 @@ const UploadPage = () => {
                       <span className="text-gray-400 mono-text">STRATEGY:</span>
                       <span className="text-white mono-text">{uploadResult.placement?.strategy || 'unknown'}</span>
                     </div>
+                    {uploadResult.owner && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-400 mono-text">OWNER:</span>
+                        <span className="text-purple-300 mono-text">{uploadResult.owner}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="pt-2">

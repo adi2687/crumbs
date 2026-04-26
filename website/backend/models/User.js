@@ -34,6 +34,12 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     match: [/^DEV_[A-Z0-9]{9}$/, 'DEVICE_ID_INVALID_FORMAT']
   },
+  peerId: {
+    type: String,
+    unique: true,
+    sparse: true,
+    index: true
+  },
   isActive: {
     type: Boolean,
     default: true

@@ -3,7 +3,6 @@ import FormData from "form-data";
 import fs from "fs";
 const SERVER = process.env.TRACKER_URL || "http://localhost:7000";
 const peerId = process.env.PEER_ID || "peer-A3F2";
-console.log(peerId)
 let missedCount = 0;
 let lastLatencyMs = 0;
 

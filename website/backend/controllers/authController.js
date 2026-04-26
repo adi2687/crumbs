@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import { assignPeerId } from '../services/peerPool.js';
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -65,12 +66,16 @@ export const register = async (req, res) => {
       });
     }
 
+    // Assign peerId from the trained model's pool (or fallback)
+    const peerId = await assignPeerId(User);
+
     // Create user
     const user = await User.create({
       username,
       email,
       password,
-      deviceId
+      deviceId,
+      peerId
     });
 
     // Create token
@@ -83,7 +88,8 @@ export const register = async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
-        deviceId: user.deviceId
+        deviceId: user.deviceId,
+        peerId: user.peerId
       }
     });
   } catch (error) {
@@ -157,6 +163,11 @@ export const login = async (req, res) => {
       });
     }
 
+    // Backfill peerId for users created before this field existed
+    if (!user.peerId) {
+      user.peerId = await assignPeerId(User);
+    }
+
     // Update last login
     user.lastLogin = Date.now();
     await user.save();
@@ -172,6 +183,7 @@ export const login = async (req, res) => {
         username: user.username,
         email: user.email,
         deviceId: user.deviceId,
+        peerId: user.peerId,
         lastLogin: user.lastLogin
       }
     });
@@ -198,6 +210,7 @@ export const getMe = async (req, res) => {
         username: user.username,
         email: user.email,
         deviceId: user.deviceId,
+        peerId: user.peerId,
         isActive: user.isActive,
         createdAt: user.createdAt,
         lastLogin: user.lastLogin

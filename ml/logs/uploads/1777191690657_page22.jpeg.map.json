@@ -1,0 +1,43 @@
+{
+  "filename": "page22.jpeg",
+  "size": 92956,
+  "chunkSize": 102400,
+  "shardCount": 1,
+  "owner": "peer-A3F2",
+  "shards": [
+    {
+      "part": 1,
+      "hash": "d226bb0bd60a14595b018c8f6f5d54c43b4a6b2060f7586c74ec48ca6a156d66",
+      "size": 92956,
+      "server": "page22.jpeg.d226bb0bd60a14595b018c8f6f5d54c43b4a6b2060f7586c74ec48ca6a156d66.part1",
+      "peer": "peer-F44A"
+    }
+  ],
+  "placement": {
+    "strategy": "healthy-only",
+    "excludedOwner": true,
+    "candidates": [
+      {
+        "peerId": "peer-A3F2",
+        "status": "HEALTHY",
+        "risk_score": 0.004
+      },
+      {
+        "peerId": "peer-F44A",
+        "status": "HEALTHY",
+        "risk_score": 0.024
+      },
+      {
+        "peerId": "peer-B71C",
+        "status": "MEDIUM",
+        "risk_score": 0.472
+      },
+      {
+        "peerId": "peer-D09E",
+        "status": "HIGH RISK",
+        "risk_score": 1
+      }
+    ]
+  },
+  "createdAt": "2026-04-26T08:21:30.656Z"
+}
