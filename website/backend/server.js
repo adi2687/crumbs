@@ -14,6 +14,7 @@ import users from "./routes/users.js";
 import uploadToCloudinary from "./routes/uploadToCloudinary.js";
 import settings from "./routes/settings.js";
 import predictions from "./routes/predictions.js";
+import uploadShards from "./routes/uploadShards.js";
 import { startMlBridge } from "./services/mlBridge.js";
 const app = express();
 
@@ -56,6 +57,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", auth);
 app.use("/api/users", users);
 app.use("/api/upload", uploadToCloudinary);
+app.use("/api/upload", uploadShards);
 app.use("/api/settings", settings);
 app.use("/api/predictions", predictions);
 

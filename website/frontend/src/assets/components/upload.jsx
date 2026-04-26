@@ -14,23 +14,14 @@ const UploadPage = () => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result);
+        reader.readAsDataURL(file);
+      } else {
+        setPreview(null);
+      }
     }
-  };
-
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
   };
 
   const handleUpload = async () => {
@@ -43,18 +34,13 @@ const UploadPage = () => {
     setError('');
 
     try {
-      const base64Image = await convertToBase64(selectedFile);
-      
       const backend_address = import.meta.env.VITE_BACKEND_ADDRESS || 'http://localhost:5000';
-      
-      const response = await fetch(`${backend_address}/api/upload/uploadImage`, {
+      const form = new FormData();
+      form.append('file', selectedFile);
+
+      const response = await fetch(`${backend_address}/api/upload/file`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          image: base64Image
-        })
+        body: form,
       });
 
       const result = await response.json();
@@ -174,7 +160,6 @@ const UploadPage = () => {
                 <input
                   id="fileInput"
                   type="file"
-                  accept="image/*"
                   onChange={handleFileSelect}
                   className="hidden"
                 />
@@ -252,44 +237,47 @@ const UploadPage = () => {
               {uploadResult ? (
                 <div className="space-y-4">
                   <div className="text-green-400 text-sm mono-text">
-                    ✓ SUCCESSFULLY_UPLOADED_TO_DECENTRALIZED_NETWORK
+                    ✓ SHARDED_AND_DISTRIBUTED ({uploadResult.shardCount} shards)
                   </div>
-                  
-                  <div className="space-y-3 text-sm">
+
+                  <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400 mono-text">URL:</span>
-                      <a 
-                        href={uploadResult.url} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-400 hover:text-blue-300 mono-text truncate max-w-xs"
-                      >
-                        {uploadResult.url}
-                      </a>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400 mono-text">PUBLIC_ID:</span>
-                      <span className="text-white mono-text">{uploadResult.public_id}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400 mono-text">FORMAT:</span>
-                      <span className="text-white mono-text">{uploadResult.format}</span>
+                      <span className="text-gray-400 mono-text">FILE:</span>
+                      <span className="text-white mono-text truncate max-w-xs">{uploadResult.filename}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-400 mono-text">SIZE:</span>
-                      <span className="text-white mono-text">
-                        {(uploadResult.size / 1024).toFixed(2)} KB
-                      </span>
+                      <span className="text-white mono-text">{(uploadResult.size / 1024).toFixed(2)} KB</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400 mono-text">CHUNK_SIZE:</span>
+                      <span className="text-white mono-text">{(uploadResult.chunkSize / 1024).toFixed(0)} KB</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400 mono-text">STRATEGY:</span>
+                      <span className="text-white mono-text">{uploadResult.placement?.strategy || 'unknown'}</span>
                     </div>
                   </div>
 
-                  <div className="pt-4">
-                    <img 
-                      src={uploadResult.url} 
-                      alt="Uploaded" 
-                      className="w-full rounded border border-gray-700"
-                    />
+                  <div className="pt-2">
+                    <p className="text-xs text-gray-400 mono-text mb-2">SHARD_MAP</p>
+                    <div className="max-h-64 overflow-auto space-y-1">
+                      {uploadResult.shards.map((s) => (
+                        <div key={s.part} className="flex items-center justify-between text-xs mono-text border border-gray-800 rounded p-2">
+                          <span className="text-gray-400">part{s.part}</span>
+                          <span className="text-blue-300 truncate max-w-[8rem]" title={s.hash}>{s.hash.slice(0, 10)}…</span>
+                          <span className="text-purple-300">{s.peer}</span>
+                          <span className="text-gray-500">{s.size}B</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  {preview && (
+                    <div className="pt-4">
+                      <img src={preview} alt="Uploaded" className="w-full rounded border border-gray-700" />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="text-center text-gray-400 text-sm mono-text">

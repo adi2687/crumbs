@@ -403,8 +403,14 @@ const Profile = () => {
                 <Settings className="w-4 h-4 mr-2" />
                 SETTINGS
               </button>
-            </div>
+              <button
+                className="w-full mt-6 bg-white text-black py-2 font-bold mono-text hover:bg-gray-200 transition-all neon-glow flex items-center justify-center"
+                onClick={()=>navigate("/upload")}
+              >
+                Upload
+              </button>
 
+            </div>
             {/* Stats and Activity */}
             <div className="lg:col-span-2 space-y-6">
               
