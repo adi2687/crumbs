@@ -1,0 +1,48 @@
+{
+  "filename": "WhatsApp Image 2026-01-26 at 21.54.28 (1).jpeg",
+  "size": 119702,
+  "chunkSize": 102400,
+  "shardCount": 2,
+  "shards": [
+    {
+      "part": 1,
+      "hash": "66e57e4009b52a2703d0c448048b1cb091bcb8376b8103a544b6df68c79c5b97",
+      "size": 102400,
+      "server": "WhatsApp Image 2026-01-26 at 21.54.28 (1).jpeg.66e57e4009b52a2703d0c448048b1cb091bcb8376b8103a544b6df68c79c5b97.part1",
+      "peer": "peer-A3F2"
+    },
+    {
+      "part": 2,
+      "hash": "3556ffabe71578d367082554a05cc6471c469766421058644d0beb26b4eadcf7",
+      "size": 17302,
+      "server": "WhatsApp Image 2026-01-26 at 21.54.28 (1).jpeg.3556ffabe71578d367082554a05cc6471c469766421058644d0beb26b4eadcf7.part2",
+      "peer": "peer-F44A"
+    }
+  ],
+  "placement": {
+    "strategy": "healthy-only",
+    "candidates": [
+      {
+        "peerId": "peer-A3F2",
+        "status": "HEALTHY",
+        "risk_score": 0.004
+      },
+      {
+        "peerId": "peer-F44A",
+        "status": "HEALTHY",
+        "risk_score": 0.024
+      },
+      {
+        "peerId": "peer-B71C",
+        "status": "MEDIUM",
+        "risk_score": 0.472
+      },
+      {
+        "peerId": "peer-D09E",
+        "status": "HIGH RISK",
+        "risk_score": 1
+      }
+    ]
+  },
+  "createdAt": "2026-04-26T08:05:31.242Z"
+}

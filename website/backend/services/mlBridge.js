@@ -11,7 +11,7 @@ let lastRun = null;
 let lastError = null;
 let running = false;
 
-function runPredictions() {
+export function runPredictions() {
   if (running) return;
   running = true;
 

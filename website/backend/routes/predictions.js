@@ -2,7 +2,7 @@ import express from "express";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import { getStatus } from "../services/mlBridge.js";
+import { getStatus, runPredictions } from "../services/mlBridge.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PRED_FILE = path.resolve(__dirname, "..", "..", "..", "ml", "logs", "predictions.json");
@@ -23,6 +23,11 @@ router.get("/", async (req, res) => {
       ...status,
     });
   }
+});
+
+router.post("/refresh", (req, res) => {
+  runPredictions();
+  res.json({ success: true, message: "prediction run triggered", ...getStatus() });
 });
 
 export default router;

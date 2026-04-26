@@ -4,6 +4,7 @@ import crypto from "crypto";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import { runPredictions } from "../services/mlBridge.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ML_LOGS = path.resolve(__dirname, "..", "..", "..", "ml", "logs");
@@ -96,6 +97,8 @@ router.post("/file", upload.single("file"), async (req, res) => {
   } catch (err) {
     console.warn("[upload] manifest write failed:", err.message);
   }
+
+  runPredictions();
 
   res.json({ success: true, data: manifest });
 });
