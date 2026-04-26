@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Database, User, Mail, Shield, Smartphone, Activity, Globe, Zap, Wifi, ChevronLeft, Terminal, CheckCircle, AlertCircle, LogOut, Settings, Award } from 'lucide-react';
+import { Database, User, Mail, Shield, Smartphone, Activity, Globe, Zap, Wifi, ChevronLeft, Terminal, CheckCircle, AlertCircle, LogOut, Settings, Award, Cpu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -13,6 +13,8 @@ const Profile = () => {
     storage: 100,
     earnings: 127
   });
+  const [predictions, setPredictions] = useState({});
+  const [predictionMeta, setPredictionMeta] = useState({ lastRun: null, lastError: null });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,8 +48,31 @@ const Profile = () => {
       }));
     }, 3000);
 
-    return () => clearInterval(interval);
+    const backendAddress = import.meta.env.VITE_BACKEND_ADDRESS || 'http://localhost:5000';
+    const fetchPredictions = async () => {
+      try {
+        const res = await fetch(`${backendAddress}/api/predictions`);
+        const data = await res.json();
+        setPredictions(data.predictions || {});
+        setPredictionMeta({ lastRun: data.lastRun, lastError: data.lastError });
+      } catch (err) {
+        setPredictionMeta({ lastRun: null, lastError: err.message });
+      }
+    };
+    fetchPredictions();
+    const predInterval = setInterval(fetchPredictions, 30000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(predInterval);
+    };
   }, [navigate]);
+
+  const statusColor = (status) => {
+    if (status === 'HIGH RISK') return 'text-red-400 border-red-400';
+    if (status === 'MEDIUM') return 'text-yellow-400 border-yellow-400';
+    return 'text-green-400 border-green-400';
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('crumbs_token');
@@ -463,6 +488,59 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Network Risk Forecast (GRU) */}
+              <div className="glass-card rounded-lg p-6 neon-border data-stream">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold mono-text flex items-center">
+                    <Cpu className="w-5 h-5 mr-2" />
+                    NETWORK_RISK_FORECAST
+                  </h3>
+                  <span className="text-xs text-gray-500 mono-text">
+                    {predictionMeta.lastRun
+                      ? `UPDATED ${new Date(predictionMeta.lastRun).toLocaleTimeString()}`
+                      : 'WAITING_FOR_DATA'}
+                  </span>
+                </div>
+
+                {predictionMeta.lastError && (
+                  <p className="text-xs mono-text text-red-400 mb-3">
+                    ERR: {predictionMeta.lastError}
+                  </p>
+                )}
+
+                {Object.keys(predictions).length === 0 ? (
+                  <p className="text-sm text-gray-400 mono-text">
+                    NO_PREDICTIONS_YET — peer must be registered in node2idx and have ≥48 heartbeats.
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {Object.entries(predictions).map(([pid, p]) => (
+                      <div
+                        key={pid}
+                        className="stat-card flex items-center justify-between"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-sm mono-text text-white">{pid}</span>
+                          <span className="text-xs mono-text text-gray-400">
+                            UPTIME {p.uptime_pct}% · DANGER_HOURS {p.danger_hours?.length ?? 0}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-sm mono-text text-gray-300">
+                            RISK {p.risk_score}
+                          </span>
+                          <span
+                            className={`text-xs mono-text px-2 py-1 border rounded ${statusColor(p.status)}`}
+                          >
+                            {p.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Earnings Overview */}

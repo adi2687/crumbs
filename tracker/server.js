@@ -1,43 +1,87 @@
-const express = require("express");
-const multer = require("multer");
-const cors = require("cors");
-const fs = require("fs");
-const bodyParser = require("body-parser");
-const dotenv=require('dotenv')
-dotenv.config()
+import express from "express";
+import multer from "multer";
+import cors from "cors";
+import fs from "fs";
+import path from "path";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-// Configure static files
 app.use(express.static(__dirname));
 
 if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
 
 const upload = multer({ dest: "uploads/" });
 
-// --- Track online peers ---
-const peers = {}; // { peerId: lastSeen }
-const TIMEOUT = 15000; // 15 seconds offline timeout
+const peers = {};
+const TIMEOUT = 15000;
 
-// Serve index.html for the root route
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+const HEARTBEAT_LOG = path.resolve(__dirname, "..", "ml", "logs", "heartbeats.jsonl");
+
+function ensureJsonlLog() {
+  const dir = path.dirname(HEARTBEAT_LOG);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(HEARTBEAT_LOG)) {
+    fs.writeFileSync(HEARTBEAT_LOG, "");
+    return;
+  }
+  const content = fs.readFileSync(HEARTBEAT_LOG, "utf8").trim();
+  if (!content || !content.startsWith("[")) return;
+  try {
+    const records = JSON.parse(content);
+    const lines = records.map((r) => JSON.stringify(r)).join("\n") + "\n";
+    fs.writeFileSync(HEARTBEAT_LOG, lines);
+    console.log(`Normalized ${records.length} heartbeat records to JSONL`);
+  } catch (err) {
+    console.warn("Could not normalize heartbeats.jsonl:", err.message);
+  }
+}
+ensureJsonlLog();
+
+function logHeartbeat(record) {
+  fs.appendFile(HEARTBEAT_LOG, JSON.stringify(record) + "\n", (err) => {
+    if (err) console.warn("heartbeat log write failed:", err.message);
+  });
+}
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
 });
-// Peer heartbeat/register
+
 app.post("/heartbeat", (req, res) => {
+  const { peerId, missedCount = 0, latencyMs = 0, day, hour } = req.body;
+  if (!peerId) return res.status(400).json({ error: "peerId required" });
+  peers[peerId] = Date.now();
+
+  const now = new Date();
+  const mc = Number(missedCount) || 0;
+  const record = {
+    peerId,
+    missedCount: mc,
+    latencyMs: Number(latencyMs) || 0,
+    day: Number.isInteger(day) ? day : now.getDay(),
+    hour: Number.isInteger(hour) ? hour : now.getHours(),
+    label: mc >= 3 ? 1 : 0,
+  };
+  logHeartbeat(record);
+  res.json({ ok: true });
+});
+
+app.post("/register", (req, res) => {
   const { peerId } = req.body;
   if (!peerId) return res.status(400).json({ error: "peerId required" });
   peers[peerId] = Date.now();
+  console.log("peer registered");
   res.json({ ok: true });
 });
-app.post('/register',(req,res)=>{
-  const {peerId}=req.body;
-  if(!peerId) return res.status(400).json({error:"peerId required"});
-  peers[peerId]=Date.now();
-  console.log('peer registered')
-  res.json({ok:true});
-})
-// Get online peer count
+
 app.get("/peers", (req, res) => {
   const now = Date.now();
   const onlinePeers = Object.entries(peers)
@@ -46,16 +90,14 @@ app.get("/peers", (req, res) => {
   res.json({ count: onlinePeers.length, online: onlinePeers });
 });
 
-// Upload file
 app.post("/upload", upload.single("file"), (req, res) => {
-  const uniquename=req.file.originalname;
+  const uniquename = req.file.originalname;
   const destPath = `uploads/${uniquename}`;
   fs.renameSync(req.file.path, destPath);
   console.log(`File uploaded: ${req.file.originalname}`);
   res.json({ ok: true, filename: uniquename });
 });
 
-// Download file
 app.get("/files/:filename", (req, res) => {
   const path = `uploads/${req.params.filename}`;
   if (fs.existsSync(path)) {
@@ -65,7 +107,6 @@ app.get("/files/:filename", (req, res) => {
   }
 });
 
-// Cleanup offline peers every 10 seconds
 setInterval(() => {
   const now = Date.now();
   for (const id in peers) {
@@ -75,6 +116,7 @@ setInterval(() => {
     }
   }
 }, 10000);
-const address=process.env.ADDRESS
-const port=process.env.PORT
-app.listen(port,address, () => console.log(`Server running on http://${address}:${port}`));
+
+const address = process.env.ADDRESS;
+const port = process.env.PORT || 7000;
+app.listen(port, address, () => console.log(`Server running on http://${address}:${port}`));

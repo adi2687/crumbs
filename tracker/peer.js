@@ -1,20 +1,36 @@
-const axios = require("axios");
-const FormData = require("form-data");
-const fs = require("fs");
+import axios from "axios";
+import FormData from "form-data";
+import fs from "fs";
+const SERVER = process.env.TRACKER_URL || "http://localhost:7000";
+const peerId = process.env.PEER_ID || "peer-A3F2";
+console.log(peerId)
+let missedCount = 0;
+let lastLatencyMs = 0;
 
-const SERVER = "http://localhost:7000";
-const peerId = `peer_${Math.floor(Math.random() * 1000)}`;
-
-// Send heartbeat every 5 seconds
 setInterval(async () => {
+  const now = new Date();
+  const start = Date.now();
   try {
-    await axios.post(`${SERVER}/heartbeat`, { peerId });
+    await axios.post(
+      `${SERVER}/heartbeat`,
+      {
+        peerId,
+        missedCount,
+        latencyMs: lastLatencyMs,
+        day: now.getDay(),
+        hour: now.getHours(),
+      },
+      { timeout: 7000 }
+    );
+    lastLatencyMs = Date.now() - start;
+    missedCount = 0;
   } catch (err) {
+    missedCount += 1;
+    lastLatencyMs = 7000;
     console.error("Heartbeat failed:", err.message);
   }
 }, 5000);
 
-// Upload file
 async function uploadFile(filePath) {
   try {
     const form = new FormData();
@@ -29,7 +45,6 @@ async function uploadFile(filePath) {
   }
 }
 
-// Download file
 async function downloadFile(filename, savePath) {
   try {
     const res = await axios.get(`${SERVER}/files/${filename}`, { responseType: "stream" });
@@ -41,7 +56,6 @@ async function downloadFile(filename, savePath) {
   }
 }
 
-// Get online peer count
 async function getOnlinePeers() {
   try {
     const res = await axios.get(`${SERVER}/peers`);
@@ -51,7 +65,6 @@ async function getOnlinePeers() {
   }
 }
 
-// Example usage
 (async () => {
   await uploadFile("./logo.png");
   await downloadFile("logo.png", "./logo_copy.png");
